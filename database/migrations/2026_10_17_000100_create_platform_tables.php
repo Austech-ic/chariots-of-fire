@@ -66,7 +66,7 @@ return new class extends Migration
             $table->string('action', 100)->index();
             $table->string('subject_type')->nullable();
             $table->unsignedBigInteger('subject_id')->nullable();
-            $table->json('metadata')->nullable();
+            $table->jsonb('metadata')->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->timestamp('created_at')->useCurrent()->index();
             $table->index(['subject_type', 'subject_id']);
@@ -77,7 +77,7 @@ return new class extends Migration
             $table->string('revisionable_type');
             $table->unsignedBigInteger('revisionable_id');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->json('snapshot');
+            $table->jsonb('snapshot');
             $table->timestamp('created_at')->useCurrent();
             $table->index(['revisionable_type', 'revisionable_id']);
         });
@@ -107,7 +107,7 @@ return new class extends Migration
             $table->string('processing_status', 20)->default('pending');
             $table->text('processing_error')->nullable();
             $table->string('checksum', 64)->nullable();
-            $table->json('variants')->nullable();
+            $table->jsonb('variants')->nullable();
             $table->unsignedInteger('width')->nullable();
             $table->unsignedInteger('height')->nullable();
             $table->unsignedInteger('duration_seconds')->nullable();

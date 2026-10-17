@@ -222,7 +222,7 @@ return new class extends Migration
             $table->unsignedInteger('capacity')->nullable();
             $table->string('external_registration_url')->nullable();
             $table->string('lifecycle', 20)->default('scheduled'); // scheduled, postponed, cancelled
-            $table->json('recurrence')->nullable();
+            $table->jsonb('recurrence')->nullable();
             $table->boolean('featured')->default(false);
             $this->publishable($table);
             $table->timestamps();
@@ -284,7 +284,7 @@ return new class extends Migration
             $table->foreignId('event_id')->nullable()->constrained()->nullOnDelete();
             $table->string('category', 60)->nullable()->index();
             $table->date('taken_at')->nullable();
-            $table->json('video_urls')->nullable();
+            $table->jsonb('video_urls')->nullable();
             $this->publishable($table);
             $table->timestamps();
         });

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('booking_mode', 20)->default('both'); // request, self_service, both
             $table->boolean('approval_required')->default(true);
             $table->boolean('requires_account')->default(false);
-            $table->json('appointment_methods')->nullable(); // in_person, phone, online
+            $table->jsonb('appointment_methods')->nullable(); // in_person, phone, online
             $table->unsignedSmallInteger('min_notice_hours')->default(24);
             $table->unsignedSmallInteger('max_advance_days')->default(30);
             $table->string('status', 20)->default('active');
