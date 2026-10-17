@@ -67,6 +67,9 @@ return [
 
     'timezone' => 'UTC',
 
+    // Times are stored in UTC and displayed in this zone by default.
+    'display_timezone' => env('APP_DISPLAY_TIMEZONE', 'Africa/Lagos'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

@@ -43,4 +43,9 @@ class GalleryAlbum extends Model
     {
         return $this->cover ?? $this->images->first()?->mediaAsset;
     }
+
+    public function extraPublicMediaIds(): array
+    {
+        return $this->images()->pluck('media_asset_id')->all();
+    }
 }

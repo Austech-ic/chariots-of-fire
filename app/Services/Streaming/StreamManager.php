@@ -58,6 +58,7 @@ class StreamManager
         }
 
         $stream->saveQuietly();
+        $stream->forgetLiveCache();
 
         return $status;
     }

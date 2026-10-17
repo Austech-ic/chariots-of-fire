@@ -24,6 +24,13 @@ trait Publishable
     public static function bootPublishable(): void
     {
         static::saving(function ($model) {
+            // Staff without the publish permission can only save drafts or submit for review.
+            $user = auth()->user();
+            if ($user && method_exists($user, 'hasPermission') && ! $user->hasPermission('content.publish')
+                && $model->isDirty('status') && ! in_array($model->status, ContentStatus::editorOptions(), true)) {
+                $model->status = ContentStatus::InReview;
+            }
+
             if ($model->status === ContentStatus::Published && ! $model->published_at) {
                 $model->published_at = now();
             }
@@ -36,6 +43,33 @@ trait Publishable
                 }
             }
         });
+
+        static::saved(fn ($model) => $model->syncMediaVisibility());
+    }
+
+    /** Media attached to visible content becomes publicly servable. */
+    public function syncMediaVisibility(): void
+    {
+        if (! $this->isPubliclyVisible() || ($this->members_only ?? false)) {
+            return;
+        }
+
+        $ids = collect($this->publicMediaColumns())->map(fn ($c) => $this->{$c})->filter()->all();
+        if (method_exists($this, 'extraPublicMediaIds')) {
+            $ids = array_merge($ids, $this->extraPublicMediaIds());
+        }
+        if ($ids) {
+            \App\Models\MediaAsset::query()->whereKey($ids)->where('visibility', 'private')->update(['visibility' => 'public']);
+        }
+    }
+
+    /** @return list<string> */
+    protected function publicMediaColumns(): array
+    {
+        return array_values(array_filter(
+            ['image_asset_id', 'banner_asset_id', 'thumbnail_asset_id', 'cover_asset_id'],
+            fn ($c) => array_key_exists($c, $this->getAttributes()),
+        ));
     }
 
     public function scopePublished(Builder $query): Builder

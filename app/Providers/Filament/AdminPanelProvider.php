@@ -2,16 +2,19 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\MinistryOverview;
+use App\Http\Middleware\EnsureAccountActive;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -28,19 +31,32 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
+            ->profile(isSimple: false)
+            // Two-factor authentication (authenticator app) for staff; set REQUIRE_STAFF_MFA=true to enforce it.
+            ->multiFactorAuthentication([AppAuthentication::make()->recoverable()], isRequired: (bool) config('fco.require_staff_mfa'))
+            ->brandName('Flaming Chariot · CMS')
+            ->favicon(asset('favicon.svg'))
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#a8823a'),
+                'gray' => Color::Zinc,
+            ])
+            ->font('Inter')
+            ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups([
+                NavigationGroup::make('Website'),
+                NavigationGroup::make('Watch & Listen'),
+                NavigationGroup::make('Programmes'),
+                NavigationGroup::make('Counselling'),
+                NavigationGroup::make('Giving'),
+                NavigationGroup::make('Community'),
+                NavigationGroup::make('System')->collapsed(),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            ->pages([Dashboard::class])
+            ->widgets([AccountWidget::class, MinistryOverview::class])
+            ->databaseNotifications(false)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -54,6 +70,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureAccountActive::class,
             ]);
     }
 }

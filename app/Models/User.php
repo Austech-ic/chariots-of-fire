@@ -32,6 +32,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 
     protected $hidden = ['password', 'remember_token'];
 
+    protected $attributes = ['status' => self::STATUS_ACTIVE, 'locale' => 'en', 'is_staff' => false];
+
     /** @var array<string, bool>|null */
     private ?array $permissionCache = null;
 

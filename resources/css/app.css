@@ -1,9 +1,81 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@source '../views';
+@source '../../app/**/*.php';
 
+/* Design tokens (PRD §3.2). Gold is an accent: on light surfaces use gold-700 for text. */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    --color-ink: #101116;
+    --color-ink-800: #1a1b22;
+    --color-ink-700: #24252e;
+    --color-ink-600: #363845;
+    --color-ivory: #f7f4ee;
+    --color-ivory-200: #ece7dc;
+    --color-body: #252525;
+    --color-muted: #5c5a55;
+    --color-gold: #c9a45c;
+    --color-gold-300: #dcc28d;
+    --color-gold-700: #7d5f23;
+    --color-ember: #c4552d;
+
+    --radius-card: 14px;
+    --container-content: 75rem;
+
+    --animate-fade-in: fade-in 0.8s ease both;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+}
+
+@layer base {
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { @apply bg-ivory text-body font-sans antialiased; }
+    h1, h2, h3, h4 { @apply font-display text-balance tracking-tight; }
+    :focus-visible { outline: 3px solid var(--color-gold); outline-offset: 2px; }
+    [hidden] { display: none !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+}
+
+@utility container-site { @apply mx-auto w-full max-w-(--container-content) px-4 sm:px-6 lg:px-8; }
+@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-offset-4 disabled:opacity-60 disabled:cursor-not-allowed; }
+@utility btn-primary { @apply btn bg-gold text-ink hover:bg-gold-300; }
+@utility btn-dark { @apply btn bg-ink text-white hover:bg-ink-700; }
+@utility btn-outline-light { @apply btn border border-white/50 text-white hover:bg-white/10; }
+@utility btn-outline { @apply btn border border-ink/20 text-ink hover:border-ink/50 hover:bg-white; }
+@utility btn-sm { @apply px-4 py-2 text-xs; }
+@utility eyebrow { @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold-700; }
+@utility eyebrow-light { @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold; }
+@utility section { @apply py-16 sm:py-24; }
+@utility section-title { @apply text-3xl font-extrabold text-ink sm:text-4xl; }
+@utility card { @apply overflow-hidden rounded-(--radius-card) bg-white shadow-[0_1px_2px_rgba(16,17,22,0.06),0_8px_24px_-12px_rgba(16,17,22,0.18)]; }
+@utility card-link { @apply card block transition hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(16,17,22,0.06),0_16px_32px_-12px_rgba(16,17,22,0.25)]; }
+@utility form-label { @apply mb-1.5 block text-sm font-semibold text-ink; }
+@utility form-input { @apply block w-full rounded-lg border border-ink/15 bg-white px-4 py-3 text-base text-ink placeholder:text-muted/70 focus:border-gold-700 focus:outline-none focus:ring-2 focus:ring-gold/40; }
+@utility form-error { @apply mt-1.5 text-sm font-medium text-ember; }
+@utility form-help { @apply mt-1.5 text-sm text-muted; }
+@utility badge { @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold; }
+@utility badge-live { @apply badge bg-ember text-white; }
+@utility badge-muted { @apply badge bg-ink/5 text-ink; }
+@utility media-fallback { @apply bg-[radial-gradient(120%_120%_at_20%_10%,#3a2f1b_0%,#101116_55%)]; }
+
+@layer components {
+
+    .prose-content { @apply max-w-none text-lg leading-relaxed text-body; }
+    .prose-content p { @apply my-5; }
+    .prose-content h2 { @apply mt-12 mb-4 text-2xl font-bold text-ink; }
+    .prose-content h3 { @apply mt-8 mb-3 text-xl font-bold text-ink; }
+    .prose-content a { @apply text-gold-700 underline underline-offset-2; }
+    .prose-content ul { @apply my-5 list-disc pl-6; }
+    .prose-content ol { @apply my-5 list-decimal pl-6; }
+    .prose-content blockquote { @apply my-8 border-l-4 border-gold pl-6 font-display text-xl italic text-ink; }
+    .prose-content img { @apply my-8 rounded-(--radius-card); }
+
 }

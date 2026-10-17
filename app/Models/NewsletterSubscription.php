@@ -29,4 +29,10 @@ class NewsletterSubscription extends Model
     {
         return $this->status === 'active';
     }
+
+    /** Signed, non-expiring link for every marketing email footer. */
+    public function unsubscribeUrl(): string
+    {
+        return \Illuminate\Support\Facades\URL::signedRoute('newsletter.unsubscribe', $this);
+    }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaAsset extends Model
 {
-    use Concerns\Auditable;
+    use Concerns\Auditable, HasUlids;
 
     public const KINDS = ['image' => 'Image', 'audio' => 'Audio', 'video' => 'Video', 'document' => 'Document'];
 

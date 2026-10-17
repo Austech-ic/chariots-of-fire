@@ -24,6 +24,8 @@ class Livestream extends Model
 
     protected static function booted(): void
     {
+        static::saved(fn (Livestream $stream) => $stream->forgetLiveCache());
+        static::deleted(fn (Livestream $stream) => $stream->forgetLiveCache());
         static::saving(function (Livestream $stream) {
             $input = $stream->external_id ?: $stream->watch_url ?: $stream->embed_url;
             if ($input && ($resolved = app(StreamManager::class)->resolve($stream->provider, $input))) {
@@ -32,6 +34,11 @@ class Livestream extends Model
                 $stream->watch_url = $resolved->watchUrl;
             }
         });
+    }
+
+    public function forgetLiveCache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('fco.live-now');
     }
 
     public function event(): BelongsTo

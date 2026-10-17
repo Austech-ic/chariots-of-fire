@@ -82,4 +82,10 @@ class Sermon extends Model
 
         return array_values(array_unique($types));
     }
+
+    /** Uploaded audio/video of a public (non members-only) sermon is publicly playable. */
+    public function extraPublicMediaIds(): array
+    {
+        return $this->media()->pluck('media_asset_id')->all();
+    }
 }

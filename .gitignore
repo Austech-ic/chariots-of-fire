@@ -14,12 +14,7 @@
 /.zed
 /auth.json
 /node_modules
-/public/build
-/public/css/filament
-/public/fonts-manifest.dev.json
-/public/fonts/filament
 /public/hot
-/public/js/filament
 /public/storage
 /storage/*.key
 /storage/pail
@@ -28,3 +23,9 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Built assets ARE committed so shared hosting needs no Node.js (rebuild with `npm run build`).
+/public/hot
+/database/database.sqlite
+/storage/app/installed.lock
+/release

@@ -13,6 +13,11 @@ class SermonMedia extends Model
 
     protected $casts = ['download_allowed' => 'boolean'];
 
+    protected static function booted(): void
+    {
+        static::saved(fn (self $item) => $item->sermon?->syncMediaVisibility());
+    }
+
     public function sermon(): BelongsTo
     {
         return $this->belongsTo(Sermon::class);

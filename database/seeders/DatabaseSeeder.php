@@ -2,24 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+/**
+ * Non-sensitive reference data only. Safe to run repeatedly.
+ * Staff accounts are created with `php artisan fco:create-admin` or the web installer.
+ */
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            LanguageSeeder::class,
+            AccessControlSeeder::class,
+            ReferenceDataSeeder::class,
         ]);
     }
 }

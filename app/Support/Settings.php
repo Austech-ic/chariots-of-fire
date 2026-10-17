@@ -30,7 +30,6 @@ class Settings
         'donation_presets' => '5000,10000,25000,50000,100000',
         'donation_currencies' => 'NGN',
         'default_og_image' => null,
-        'analytics_snippet' => null,
     ];
 
     public static function all(): array

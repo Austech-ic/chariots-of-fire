@@ -29,6 +29,16 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="APP_INSTALLED" value="true"/>
+        <env name="APP_URL" value="http://localhost"/>
+        <env name="PAYMENT_PROVIDER" value="test"/>
+        <env name="PAYMENT_TEST_GATEWAY" value="true"/>
+        <env name="PAYSTACK_SECRET_KEY" value=""/>
+        <env name="FLUTTERWAVE_SECRET_KEY" value=""/>
+        <env name="SMS_DRIVER" value="log"/>
+        <env name="WHATSAPP_DRIVER" value="log"/>
+        <env name="NEWSLETTER_PROVIDER" value="none"/>
+        <env name="YOUTUBE_API_KEY" value=""/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>

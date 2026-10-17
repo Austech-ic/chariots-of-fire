@@ -38,6 +38,16 @@ return [
             'report' => false,
         ],
 
+        // Uploaded media. Private by default and served through MediaController,
+        // so no public/storage symlink is required (many shared hosts forbid symlinks).
+        'media' => [
+            'driver' => 'local',
+            'root' => storage_path('app/media'),
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
