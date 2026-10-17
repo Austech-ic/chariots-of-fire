@@ -26,11 +26,13 @@ git archive --format=tar HEAD | tar -x -C "$STAGE"
 cp -R public/build "$STAGE/public/"
 
 echo "→ Installing production PHP dependencies"
-(cd "$STAGE" && COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --no-progress --quiet)
+(cd "$STAGE" && COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress --quiet)
 
 echo "→ Removing development-only files"
 rm -rf "$STAGE"/{tests,node_modules,.github,phpunit.xml,.editorconfig,.styleci.yml,.gitattributes,release}
 rm -f "$STAGE/.env" "$STAGE/database/database.sqlite"
+# Composer may fall back to git clones when dist downloads fail; never ship VCS data.
+find "$STAGE/vendor" -type d \( -name .git -o -name .github \) -prune -exec rm -rf {} +
 find "$STAGE/storage" -mindepth 2 -type f ! -name .gitignore -delete 2>/dev/null || true
 
 echo "→ Creating ${ZIP}"
