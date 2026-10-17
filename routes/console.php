@@ -18,3 +18,4 @@ Schedule::command('fco:generate-occurrences')->dailyAt('01:10');
 Schedule::command('fco:apply-retention')->dailyAt('02:20');
 Schedule::command('queue:prune-failed --hours=720')->daily();
 Schedule::command('auth:clear-resets')->everyFifteenMinutes();
+Schedule::command('fco:backup')->dailyAt('03:15')->withoutOverlapping();

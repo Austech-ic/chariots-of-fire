@@ -3,11 +3,10 @@ name: Tests
 on:
   push:
     branches:
+      - main
       - master
-      - '*.x'
+      - 'claude/**'
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 permissions:
   contents: read
@@ -19,7 +18,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.3, 8.4, 8.5]
+        php: [8.3, 8.4]
 
     name: PHP ${{ matrix.php }}
 
@@ -33,11 +32,14 @@ jobs:
         uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, intl, fileinfo
           coverage: none
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Audit dependencies for known vulnerabilities
+        run: composer audit --no-dev
 
       - name: Copy environment file
         run: cp .env.example .env
@@ -47,3 +49,18 @@ jobs:
 
       - name: Execute tests
         run: php artisan test
+
+  assets:
+    runs-on: ubuntu-latest
+    name: Frontend build is up to date
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build
+      - name: Committed public/build matches the sources
+        run: git diff --exit-code -- public/build || (echo "Run 'npm run build' and commit public/build" && exit 1)

@@ -12,7 +12,7 @@ class Installer
 
     public static function isInstalled(): bool
     {
-        return filter_var(env('APP_INSTALLED', false), FILTER_VALIDATE_BOOL)
+        return filter_var(config('fco.installed'), FILTER_VALIDATE_BOOL)
             || file_exists(self::lockPath())
             || ! config('fco.installer_enabled');
     }
@@ -20,6 +20,7 @@ class Installer
     public static function markInstalled(): void
     {
         file_put_contents(self::lockPath(), now()->toIso8601String());
+        self::writeEnv(['APP_INSTALLED' => 'true']);
     }
 
     /** @return array<string, bool> */

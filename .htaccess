@@ -1,0 +1,25 @@
+# ---------------------------------------------------------------------------
+# Fallback for shared hosting where the domain's document root CANNOT be set
+# to the /public folder. Requests are routed into /public and every
+# application folder and secret file is blocked. If you CAN point the domain
+# at /public (recommended), this file is never used.
+# ---------------------------------------------------------------------------
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never serve dotfiles (.env, .git ...), build files or application folders.
+    RewriteRule (^|/)\. - [F,L]
+    RewriteRule ^(artisan|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml|vite\.config\.js|README\.md)$ - [F,L,NC]
+    RewriteRule ^(app|bootstrap|config|database|docs|lang|node_modules|release|resources|routes|scripts|storage|tests|vendor)(/|$) - [F,L,NC]
+
+    # Everything else is served from /public.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # Without mod_rewrite this fallback cannot protect the application: point the domain at /public instead.
+    Require all denied
+</IfModule>

@@ -13,6 +13,8 @@ return [
 
     'installer_enabled' => env('INSTALLER_ENABLED', true),
 
+    'installed' => env('APP_INSTALLED', false),
+
     // Extra CSP sources, e.g. for an analytics provider: "https://plausible.io".
     'csp_extra_script_src' => env('CSP_EXTRA_SCRIPT_SRC', ''),
     'csp_extra_connect_src' => env('CSP_EXTRA_CONNECT_SRC', ''),
@@ -110,6 +112,14 @@ return [
         'provider' => env('NEWSLETTER_PROVIDER', 'none'),
         'mailchimp' => ['api_key' => env('MAILCHIMP_API_KEY'), 'list_id' => env('MAILCHIMP_LIST_ID')],
         'brevo' => ['api_key' => env('BREVO_API_KEY'), 'list_id' => env('BREVO_LIST_ID')],
+    ],
+
+    // Nightly backups (storage/app/backups). Download them off-server regularly.
+    'backup' => [
+        'password' => env('BACKUP_PASSWORD'),
+        'keep' => (int) env('BACKUP_KEEP', 14),
+        'include_media' => (bool) env('BACKUP_INCLUDE_MEDIA', false),
+        'exclude_tables' => ['sessions', 'cache', 'cache_locks', 'jobs', 'job_batches', 'failed_jobs', 'migrations'],
     ],
 
     // Retention periods (days). Review with the ministry's data protection adviser.

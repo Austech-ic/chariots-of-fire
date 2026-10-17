@@ -33,10 +33,7 @@ return Application::configure(basePath: $basePath)
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('member.dashboard'));
 
-        // Behind a load balancer / CDN set TRUSTED_PROXIES (e.g. "*" on Cloudflare-fronted hosts).
-        if ($proxies = env('TRUSTED_PROXIES')) {
-            $middleware->trustProxies(at: $proxies === '*' ? '*' : explode(',', $proxies));
-        }
+        // Trusted proxies come from config/trustedproxy.php (TRUSTED_PROXIES).
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

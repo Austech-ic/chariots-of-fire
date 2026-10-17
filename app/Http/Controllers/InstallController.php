@@ -75,6 +75,7 @@ class InstallController extends Controller
             'DB_USERNAME' => $data['db_username'] ?? '',
             'DB_PASSWORD' => $data['db_password'] ?? '',
             'MAIL_FROM_ADDRESS' => $data['mail_from'],
+            'SESSION_SECURE_COOKIE' => str_starts_with($data['app_url'], 'https://') ? 'true' : '',
         ]);
 
         // Apply the new connection to this request as well.

@@ -81,7 +81,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->isProduction()) {
+        // Generate https:// links whenever the site address is https (works behind proxies that terminate TLS).
+        if (str_starts_with((string) config('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
 
