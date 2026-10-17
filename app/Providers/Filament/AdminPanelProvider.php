@@ -42,6 +42,7 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Zinc,
             ])
             ->font('Inter')
+            ->defaultAvatarProvider(\App\Filament\Support\InitialsAvatarProvider::class)
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
                 NavigationGroup::make('Website'),

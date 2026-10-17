@@ -79,14 +79,15 @@ class InstallController extends Controller
         ]);
 
         // Apply the new connection to this request as well.
-        config([
-            'database.default' => $connection,
-            "database.connections.{$connection}.host" => $data['db_host'] ?? null,
-            "database.connections.{$connection}.port" => $port,
-            "database.connections.{$connection}.database" => $database,
-            "database.connections.{$connection}.username" => $data['db_username'] ?? null,
-            "database.connections.{$connection}.password" => $data['db_password'] ?? '',
-        ]);
+        config(['database.default' => $connection, "database.connections.{$connection}.database" => $database]);
+        if ($connection !== 'sqlite') {
+            config([
+                "database.connections.{$connection}.host" => $data['db_host'],
+                "database.connections.{$connection}.port" => $port,
+                "database.connections.{$connection}.username" => $data['db_username'],
+                "database.connections.{$connection}.password" => $data['db_password'] ?? '',
+            ]);
+        }
         DB::purge($connection);
 
         try {

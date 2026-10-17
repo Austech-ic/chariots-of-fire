@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Vite;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,6 +15,9 @@ class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
     {
+        // Per-request nonce for the few inline scripts Vite emits (asset prefetching).
+        $nonce = Vite::useCspNonce();
+
         $response = $next($request);
 
         $response->headers->set('X-Content-Type-Options', 'nosniff');
@@ -33,7 +37,7 @@ class SecurityHeaders
             $vite = app()->environment('local') ? ' http://localhost:5173 ws://localhost:5173' : '';
             $response->headers->set('Content-Security-Policy', implode('; ', [
                 "default-src 'self'",
-                "script-src 'self' ".config('fco.csp_extra_script_src').$vite,
+                "script-src 'self' 'nonce-{$nonce}' ".config('fco.csp_extra_script_src').$vite,
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com".$vite,
                 "font-src 'self' https://fonts.gstatic.com data:",
                 "img-src 'self' data: https://i.ytimg.com https://img.youtube.com https://i.vimeocdn.com",

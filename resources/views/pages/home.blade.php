@@ -116,7 +116,7 @@
                             <div class="grid gap-4 sm:grid-cols-3 lg:col-span-3">
                                 @forelse ($sermons as $sermon)
                                     <a href="{{ lroute('sermons.show', $sermon) }}" class="group block">
-                                        <div class="relative aspect-[4/5] overflow-hidden rounded-(--radius-card)">
+                                        <div class="relative aspect-video overflow-hidden rounded-(--radius-card) sm:aspect-[4/5]">
                                             @if ($sermon->thumbnail)
                                                 <x-picture :asset="$sermon->thumbnail" alt="" class="absolute inset-0" variant="sm" sizes="(min-width:1024px) 20vw, 100vw" />
                                             @elseif ($sermon->youtube())
