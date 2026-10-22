@@ -4,9 +4,9 @@
         <div class="container-site">
             @if ($categories->isNotEmpty())
                 <nav class="flex flex-wrap gap-2" aria-label="{{ __('Album categories') }}">
-                    <a href="{{ lroute('gallery.index') }}" class="badge px-4 py-2 {{ ! $category ? 'bg-ink text-white' : 'bg-white text-ink' }}">{{ __('All') }}</a>
+                    <a href="{{ lroute('gallery.index') }}" class="badge px-4 py-2 {{ ! $category ? 'bg-fg text-canvas' : 'bg-surface text-fg' }}">{{ __('All') }}</a>
                     @foreach ($categories as $cat)
-                        <a href="{{ lroute('gallery.index', ['category' => $cat]) }}" class="badge px-4 py-2 {{ $category === $cat ? 'bg-ink text-white' : 'bg-white text-ink' }}">{{ $cat }}</a>
+                        <a href="{{ lroute('gallery.index', ['category' => $cat]) }}" class="badge px-4 py-2 {{ $category === $cat ? 'bg-fg text-canvas' : 'bg-surface text-fg' }}">{{ $cat }}</a>
                     @endforeach
                 </nav>
             @endif

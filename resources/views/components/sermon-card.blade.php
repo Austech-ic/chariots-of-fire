@@ -20,7 +20,7 @@
     </div>
     <div class="p-5">
         <p class="text-xs font-medium text-muted">{{ $sermon->preached_at?->translatedFormat('j M Y') }}@if ($sermon->speakers->isNotEmpty()) · {{ $sermon->speakers->pluck('name')->join(', ') }}@endif</p>
-        <h3 class="mt-1.5 text-lg font-bold leading-snug text-ink group-hover:text-gold-700">{{ $sermon->tr('title') }}</h3>
+        <h3 class="mt-1.5 text-lg font-bold leading-snug text-fg group-hover:text-accent">{{ $sermon->tr('title') }}</h3>
         @if ($sermon->tr('scripture_references'))
             <p class="mt-1 text-sm text-muted">{{ $sermon->tr('scripture_references') }}</p>
         @endif

@@ -4,7 +4,7 @@
         'instagram' => setting('social_instagram'), 'x-social' => setting('social_x'),
     ]);
 @endphp
-<footer class="bg-ink text-white/80">
+<footer class="bg-ink text-white/80 dark:border-t dark:border-white/10">
     <div class="container-site grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div class="lg:col-span-1">
             <p class="font-display text-lg font-extrabold text-white">{{ setting('site_name') }}</p>

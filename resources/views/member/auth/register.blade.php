@@ -11,5 +11,5 @@
         </label>
         <button class="btn-dark w-full">{{ __('Create account') }}</button>
     </form>
-    <p class="mt-6 text-center text-sm text-muted">{{ __('Already registered?') }} <a href="{{ route('login') }}" class="font-semibold text-gold-700 underline">{{ __('Sign in') }}</a></p>
+    <p class="mt-6 text-center text-sm text-muted">{{ __('Already registered?') }} <a href="{{ route('login') }}" class="font-semibold text-accent underline">{{ __('Sign in') }}</a></p>
 </x-auth-card>

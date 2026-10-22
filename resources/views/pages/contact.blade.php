@@ -21,10 +21,10 @@
                 @foreach ([['map-pin', __('Visit'), setting('contact_address'), null], ['phone', __('Call'), setting('contact_phone'), setting('contact_phone') ? 'tel:'.preg_replace('/[^0-9+]/', '', setting('contact_phone')) : null], ['mail', __('Email'), setting('contact_email'), setting('contact_email') ? 'mailto:'.setting('contact_email') : null], ['whatsapp', 'WhatsApp', setting('whatsapp_number'), setting('whatsapp_number') ? 'https://wa.me/'.preg_replace('/[^0-9]/', '', setting('whatsapp_number')) : null]] as [$icon, $label, $value, $href])
                     @if ($value)
                         <div class="card flex gap-4 p-5">
-                            <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold-700"><x-glyph :name="$icon" /></span>
+                            <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-gold/15 text-accent"><x-glyph :name="$icon" /></span>
                             <div>
-                                <p class="font-semibold text-ink">{{ $label }}</p>
-                                @if ($href)<a href="{{ $href }}" class="text-muted hover:text-gold-700">{{ $value }}</a>@else<p class="text-muted">{{ $value }}</p>@endif
+                                <p class="font-semibold text-fg">{{ $label }}</p>
+                                @if ($href)<a href="{{ $href }}" class="text-muted hover:text-accent">{{ $value }}</a>@else<p class="text-muted">{{ $value }}</p>@endif
                             </div>
                         </div>
                     @endif

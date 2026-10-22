@@ -16,7 +16,7 @@
         </div>
     </section>
     @if ($sermons->isNotEmpty())
-        <section class="section bg-ivory-200/60">
+        <section class="section bg-canvas-alt">
             <div class="container-site">
                 <h2 class="section-title">{{ __('Selected teachings') }}</h2>
                 <div class="mt-8 grid gap-6 md:grid-cols-3">@foreach ($sermons as $sermon)<x-sermon-card :sermon="$sermon" />@endforeach</div>

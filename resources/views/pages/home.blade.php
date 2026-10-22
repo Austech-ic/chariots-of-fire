@@ -1,11 +1,11 @@
-<x-layouts.app>
+<x-layouts.app overlay-header>
     {{-- SECTION 2 · CINEMATIC SLIDESHOW --}}
     <section data-slideshow aria-roledescription="carousel" aria-label="{{ __('Featured') }}" class="relative isolate h-[100svh] min-h-[560px] overflow-hidden bg-ink text-white">
         @forelse ($slides as $i => $slide)
             @php $t = $slide->translation(); @endphp
             <div data-slide data-duration="{{ $slide->duration_seconds }}" role="group" aria-roledescription="slide" aria-label="{{ $i + 1 }} / {{ $slides->count() }}"
                  class="absolute inset-0 transition-opacity duration-1000 {{ $i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}" @if ($i > 0) aria-hidden="true" @endif>
-                <x-picture :asset="$slide->image" alt="" class="absolute inset-0 -z-10" :eager="$i === 0" sizes="100vw" variant="lg" />
+                <x-picture :asset="$slide->image" alt="" class="absolute inset-0 -z-10" :eager="$i === 0" sizes="100vw" variant="lg" fallback="media-fallback-dark" />
                 <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/10"></div>
                 <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink/80 via-transparent to-ink/40"></div>
                 <div class="container-site flex h-full flex-col justify-end pb-28 sm:justify-center sm:pb-0">
@@ -24,7 +24,7 @@
                 </div>
             </div>
         @empty
-            <div class="absolute inset-0 -z-10 media-fallback"></div>
+            <div class="absolute inset-0 -z-10 media-fallback-dark"></div>
             <div class="container-site flex h-full flex-col justify-center">
                 <h1 class="max-w-3xl text-5xl font-extrabold leading-[1.05] sm:text-7xl animate-fade-in">{{ setting('tagline') }}</h1>
                 <div class="mt-8 flex flex-wrap gap-3">
@@ -62,16 +62,16 @@
                             <p class="eyebrow">{{ $st?->eyebrow }}</p>
                             <h2 class="section-title mt-3">{{ $st?->heading }}</h2>
                             @if ($st?->body)<p class="mt-5 text-lg text-muted">{{ $st->body }}</p>@endif
-                            @if ($st?->link_label)<a href="{{ localize_url($st->link_url) }}" class="mt-6 inline-flex items-center gap-2 font-semibold text-gold-700 hover:gap-3 transition-all">{{ $st->link_label }} <x-glyph name="arrow-right" class="size-4" /></a>@endif
+                            @if ($st?->link_label)<a href="{{ localize_url($st->link_url) }}" class="mt-6 inline-flex items-center gap-2 font-semibold text-accent hover:gap-3 transition-all">{{ $st->link_label }} <x-glyph name="arrow-right" class="size-4" /></a>@endif
                         </div>
                         @if ($mandates->isNotEmpty())
                             <ul class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
                                 @foreach ($mandates as $mandate)
                                     <li>
                                         <a href="{{ lroute('mandates.show', $mandate) }}" class="card-link group flex h-full gap-4 p-5">
-                                            <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-ink text-gold"><x-glyph :name="$mandate->icon ?: 'flame'" /></span>
+                                            <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-ink text-gold dark:bg-gold/15"><x-glyph :name="$mandate->icon ?: 'flame'" /></span>
                                             <span>
-                                                <span class="block font-display text-lg font-bold text-ink group-hover:text-gold-700">{{ $mandate->tr('title') }}</span>
+                                                <span class="block font-display text-lg font-bold text-fg group-hover:text-accent">{{ $mandate->tr('title') }}</span>
                                                 <span class="mt-1 block text-sm text-muted">{{ \Illuminate\Support\Str::limit($mandate->tr('summary'), 110) }}</span>
                                             </span>
                                         </a>
@@ -85,33 +85,33 @@
 
             @case('watch')
                 {{-- SECTION 4 · WATCH & LISTEN --}}
-                <section class="section bg-ink text-white">
+                <section class="section bg-band text-band-fg">
                     <div class="container-site">
                         <div class="flex flex-wrap items-end justify-between gap-4">
                             <div>
-                                <p class="eyebrow-light">{{ $st?->eyebrow }}</p>
+                                <p class="eyebrow">{{ $st?->eyebrow }}</p>
                                 <h2 class="mt-3 text-3xl font-extrabold sm:text-4xl">{{ $st?->heading }}</h2>
                             </div>
-                            @if ($st?->link_label)<a href="{{ localize_url($st->link_url) }}" class="btn-outline-light btn-sm">{{ $st->link_label }}</a>@endif
+                            @if ($st?->link_label)<a href="{{ localize_url($st->link_url) }}" class="btn-outline-band btn-sm">{{ $st->link_label }}</a>@endif
                         </div>
                         <div class="mt-10 grid gap-6 lg:grid-cols-5">
-                            <div class="relative overflow-hidden rounded-(--radius-card) bg-ink-800 p-8 ring-1 ring-white/10 lg:col-span-2">
+                            <div class="relative overflow-hidden rounded-(--radius-card) bg-band-card p-8 ring-1 ring-band-line lg:col-span-2">
                                 @if ($liveStream)
                                     <span class="badge-live"><span class="size-2 animate-pulse rounded-full bg-white"></span> {{ __('Live now') }}</span>
                                     <h3 class="mt-4 text-2xl font-bold">{{ $liveStream->title }}</h3>
                                     <a href="{{ lroute('live') }}" class="btn-primary mt-6"><x-glyph name="play" class="size-4" /> {{ __('Join the broadcast') }}</a>
                                 @elseif ($nextStream)
-                                    <p class="eyebrow-light">{{ __('Next broadcast') }}</p>
+                                    <p class="eyebrow">{{ __('Next broadcast') }}</p>
                                     <h3 class="mt-3 text-2xl font-bold">{{ $nextStream->title }}</h3>
-                                    <p class="mt-3 flex items-center gap-2 text-white/75"><x-glyph name="calendar" class="size-4" /> {{ local_time($nextStream->scheduled_at, 'l j F, g:i a') }}</p>
-                                    <a href="{{ lroute('live') }}" class="btn-outline-light mt-6">{{ __('Live streaming page') }}</a>
+                                    <p class="mt-3 flex items-center gap-2 text-band-muted"><x-glyph name="calendar" class="size-4" /> {{ local_time($nextStream->scheduled_at, 'l j F, g:i a') }}</p>
+                                    <a href="{{ lroute('live') }}" class="btn-outline-band mt-6">{{ __('Live streaming page') }}</a>
                                 @else
-                                    <p class="eyebrow-light">{{ __('Live broadcast') }}</p>
+                                    <p class="eyebrow">{{ __('Live broadcast') }}</p>
                                     <h3 class="mt-3 text-2xl font-bold">{{ __('We are offline right now') }}</h3>
-                                    <p class="mt-3 text-white/75">{{ __('Catch up on recent messages while you wait for the next broadcast.') }}</p>
-                                    <a href="{{ lroute('sermons.index') }}" class="btn-outline-light mt-6">{{ __('Recorded messages') }}</a>
+                                    <p class="mt-3 text-band-muted">{{ __('Catch up on recent messages while you wait for the next broadcast.') }}</p>
+                                    <a href="{{ lroute('sermons.index') }}" class="btn-outline-band mt-6">{{ __('Recorded messages') }}</a>
                                 @endif
-                                <x-glyph name="flame" class="pointer-events-none absolute -bottom-6 -right-6 size-40 text-white/5" />
+                                <x-glyph name="flame" class="pointer-events-none absolute -bottom-6 -right-6 size-40 text-band-fg/5" />
                             </div>
                             <div class="grid gap-4 sm:grid-cols-3 lg:col-span-3">
                                 @forelse ($sermons as $sermon)
@@ -125,14 +125,14 @@
                                                 <div class="absolute inset-0 media-fallback"></div>
                                             @endif
                                             <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent"></div>
-                                            <div class="absolute inset-x-0 bottom-0 p-4">
+                                            <div class="absolute inset-x-0 bottom-0 p-4 text-white">
                                                 <p class="text-xs text-white/60">{{ $sermon->preached_at?->translatedFormat('j M Y') }}</p>
                                                 <p class="mt-1 font-display font-bold leading-snug group-hover:text-gold">{{ $sermon->tr('title') }}</p>
                                             </div>
                                         </div>
                                     </a>
                                 @empty
-                                    <p class="text-white/70 sm:col-span-3">{{ __('New messages will appear here soon.') }}</p>
+                                    <p class="text-band-muted sm:col-span-3">{{ __('New messages will appear here soon.') }}</p>
                                 @endforelse
                             </div>
                         </div>
@@ -165,7 +165,7 @@
             @case('gallery')
                 {{-- SECTION 6 · MINISTRY LIFE --}}
                 @if ($albums->isNotEmpty())
-                    <section class="section bg-ivory-200/60">
+                    <section class="section bg-canvas-alt">
                         <div class="container-site">
                             <div class="flex flex-wrap items-end justify-between gap-4">
                                 <div>
@@ -199,8 +199,8 @@
                                 ['phone', __('Contact us'), __('Send a message to the ministry office.'), lroute('contact')],
                             ] as [$icon, $label, $text, $url])
                                 <a href="{{ $url }}" class="card-link group p-6">
-                                    <span class="flex size-11 items-center justify-center rounded-full bg-gold/15 text-gold-700 group-hover:bg-gold group-hover:text-ink"><x-glyph :name="$icon" /></span>
-                                    <span class="mt-4 block font-display text-lg font-bold text-ink">{{ $label }}</span>
+                                    <span class="flex size-11 items-center justify-center rounded-full bg-gold/15 text-accent group-hover:bg-gold group-hover:text-ink"><x-glyph :name="$icon" /></span>
+                                    <span class="mt-4 block font-display text-lg font-bold text-fg">{{ $label }}</span>
                                     <span class="mt-1 block text-sm text-muted">{{ $text }}</span>
                                 </a>
                             @endforeach

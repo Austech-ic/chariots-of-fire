@@ -1,9 +1,9 @@
-<x-layouts.app :title="$album->tr('title')" :description="$album->tr('description')" :image="$album->coverAsset()">
+<x-layouts.app :title="$album->tr('title')" :description="$album->tr('description')" :image="$album->coverAsset()" :overlay-header="(bool) ($album->coverAsset())?->isPublic()">
     <x-page-hero :eyebrow="$album->taken_at?->translatedFormat('F Y') ?? __('Gallery')" :title="$album->tr('title')" :intro="$album->tr('description')" :image="$album->coverAsset()" />
     <section class="section pt-10">
         <div class="container-site">
             @if ($album->event)
-                <p class="mb-6 text-sm text-muted">{{ __('From the programme') }} <a class="font-semibold text-gold-700 underline" href="{{ lroute('events.show', $album->event) }}">{{ $album->event->tr('title') }}</a></p>
+                <p class="mb-6 text-sm text-muted">{{ __('From the programme') }} <a class="font-semibold text-accent underline" href="{{ lroute('events.show', $album->event) }}">{{ $album->event->tr('title') }}</a></p>
             @endif
             @php $images = $album->images->filter(fn ($i) => $i->mediaAsset?->isPublic()); @endphp
             @if ($images->isNotEmpty())
@@ -21,7 +21,7 @@
             @endif
 
             @if ($videos->isNotEmpty())
-                <h2 class="mt-12 text-2xl font-bold text-ink">{{ __('Videos') }}</h2>
+                <h2 class="mt-12 text-2xl font-bold text-fg">{{ __('Videos') }}</h2>
                 <div class="mt-6 grid gap-6 md:grid-cols-2">
                     @foreach ($videos as $video)<x-video-embed :src="$video->embedUrl" :title="$album->tr('title')" :watch-url="$video->watchUrl" />@endforeach
                 </div>

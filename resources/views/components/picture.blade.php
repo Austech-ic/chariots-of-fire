@@ -1,6 +1,6 @@
 {{-- Responsive image from a MediaAsset with a designed fallback if it is missing or fails to load. --}}
-@props(['asset' => null, 'alt' => null, 'sizes' => '100vw', 'class' => '', 'imgClass' => 'h-full w-full object-cover', 'eager' => false, 'variant' => 'md'])
-<div data-media {{ $attributes->merge(['class' => trim('relative overflow-hidden '.$class.($asset && $asset->isPublic() ? '' : ' media-fallback'))]) }}>
+@props(['asset' => null, 'alt' => null, 'sizes' => '100vw', 'class' => '', 'imgClass' => 'h-full w-full object-cover', 'eager' => false, 'variant' => 'md', 'fallback' => 'media-fallback'])
+<div data-media {{ $attributes->merge(['class' => trim((str_contains($class, 'absolute') ? '' : 'relative ').'overflow-hidden '.$class.($asset && $asset->isPublic() ? '' : ' '.$fallback))]) }}>
     @if ($asset && $asset->isPublic())
         <img src="{{ $asset->url($variant) }}"
              @if ($asset->srcset()) srcset="{{ $asset->srcset() }}" sizes="{{ $sizes }}" @endif

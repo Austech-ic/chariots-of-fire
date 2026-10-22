@@ -3,7 +3,10 @@
 @source '../views';
 @source '../../app/**/*.php';
 
-/* Design tokens (PRD §3.2). Gold is an accent: on light surfaces use gold-700 for text. */
+/* Dark mode is opt-in via <html class="dark">; light is the default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Fixed brand palette (PRD §3.2). These never change with the theme. */
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --font-display: 'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -14,8 +17,6 @@
     --color-ink-600: #363845;
     --color-ivory: #f7f4ee;
     --color-ivory-200: #ece7dc;
-    --color-body: #252525;
-    --color-muted: #5c5a55;
     --color-gold: #c9a45c;
     --color-gold-300: #dcc28d;
     --color-gold-700: #7d5f23;
@@ -27,6 +28,67 @@
     --animate-fade-in: fade-in 0.8s ease both;
 }
 
+/* Semantic, theme-aware tokens. Utilities read the variables at runtime. */
+@theme inline {
+    --color-canvas: var(--c-canvas);
+    --color-canvas-alt: var(--c-canvas-alt);
+    --color-surface: var(--c-surface);
+    --color-fg: var(--c-fg);
+    --color-body: var(--c-body);
+    --color-muted: var(--c-muted);
+    --color-accent: var(--c-accent);
+    --color-line: var(--c-line);
+    --color-line-strong: var(--c-line-strong);
+    --color-band: var(--c-band);
+    --color-band-card: var(--c-band-card);
+    --color-band-fg: var(--c-band-fg);
+    --color-band-muted: var(--c-band-muted);
+    --color-band-line: var(--c-band-line);
+}
+
+:root {
+    color-scheme: light;
+    --c-canvas: #f7f4ee;
+    --c-canvas-alt: #efe9de;
+    --c-surface: #ffffff;
+    --c-fg: #101116;
+    --c-body: #252525;
+    --c-muted: #5c5a55;
+    --c-accent: #7d5f23;
+    --c-line: rgb(16 17 22 / 0.12);
+    --c-line-strong: rgb(16 17 22 / 0.24);
+    /* "Band" = feature sections that were charcoal in the original design. */
+    --c-band: #ebe3d3;
+    --c-band-card: #fbf8f2;
+    --c-band-fg: #101116;
+    --c-band-muted: #4a4741;
+    --c-band-line: rgb(16 17 22 / 0.1);
+    --c-header: rgb(255 255 255 / 0.92);
+    --c-shadow: rgb(16 17 22 / 0.18);
+    --c-fallback: radial-gradient(120% 120% at 20% 10%, #f3e6c8 0%, #e6dccb 55%);
+}
+
+.dark {
+    color-scheme: dark;
+    --c-canvas: #101116;
+    --c-canvas-alt: #15161c;
+    --c-surface: #1b1c23;
+    --c-fg: #f5f2ec;
+    --c-body: #d8d4cc;
+    --c-muted: #a7a39b;
+    --c-accent: #d9b56c;
+    --c-line: rgb(255 255 255 / 0.12);
+    --c-line-strong: rgb(255 255 255 / 0.26);
+    --c-band: #0b0c10;
+    --c-band-card: #1b1c23;
+    --c-band-fg: #ffffff;
+    --c-band-muted: rgb(255 255 255 / 0.72);
+    --c-band-line: rgb(255 255 255 / 0.1);
+    --c-header: rgb(16 17 22 / 0.95);
+    --c-shadow: rgb(0 0 0 / 0.5);
+    --c-fallback: radial-gradient(120% 120% at 20% 10%, #3a2f1b 0%, #101116 55%);
+}
+
 @keyframes fade-in {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: none; }
@@ -34,7 +96,7 @@
 
 @layer base {
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-    body { @apply bg-ivory text-body font-sans antialiased; }
+    body { @apply bg-canvas text-body font-sans antialiased transition-colors duration-300; }
     h1, h2, h3, h4 { @apply font-display text-balance tracking-tight; }
     :focus-visible { outline: 3px solid var(--color-gold); outline-offset: 2px; }
     [hidden] { display: none !important; }
@@ -47,35 +109,53 @@
 @utility container-site { @apply mx-auto w-full max-w-(--container-content) px-4 sm:px-6 lg:px-8; }
 @utility btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-offset-4 disabled:opacity-60 disabled:cursor-not-allowed; }
 @utility btn-primary { @apply btn bg-gold text-ink hover:bg-gold-300; }
-@utility btn-dark { @apply btn bg-ink text-white hover:bg-ink-700; }
+/* High-contrast button: charcoal on light, ivory on dark. */
+@utility btn-dark { @apply btn bg-fg text-canvas hover:opacity-90; }
+/* Outline button for text placed over photographs (always light). */
 @utility btn-outline-light { @apply btn border border-white/50 text-white hover:bg-white/10; }
-@utility btn-outline { @apply btn border border-ink/20 text-ink hover:border-ink/50 hover:bg-white; }
+@utility btn-outline { @apply btn border border-line-strong text-fg hover:border-fg/50 hover:bg-surface; }
+@utility btn-outline-band { @apply btn border border-band-fg/40 text-band-fg hover:bg-band-fg/10; }
 @utility btn-sm { @apply px-4 py-2 text-xs; }
-@utility eyebrow { @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold-700; }
+@utility eyebrow { @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent; }
+/* Eyebrow over photographs (always gold on dark imagery). */
 @utility eyebrow-light { @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold; }
 @utility section { @apply py-16 sm:py-24; }
-@utility section-title { @apply text-3xl font-extrabold text-ink sm:text-4xl; }
-@utility card { @apply overflow-hidden rounded-(--radius-card) bg-white shadow-[0_1px_2px_rgba(16,17,22,0.06),0_8px_24px_-12px_rgba(16,17,22,0.18)]; }
-@utility card-link { @apply card block transition hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(16,17,22,0.06),0_16px_32px_-12px_rgba(16,17,22,0.25)]; }
-@utility form-label { @apply mb-1.5 block text-sm font-semibold text-ink; }
-@utility form-input { @apply block w-full rounded-lg border border-ink/15 bg-white px-4 py-3 text-base text-ink placeholder:text-muted/70 focus:border-gold-700 focus:outline-none focus:ring-2 focus:ring-gold/40; }
+@utility section-title { @apply text-3xl font-extrabold text-fg sm:text-4xl; }
+@utility card { @apply overflow-hidden rounded-(--radius-card) bg-surface shadow-[0_1px_2px_rgba(16,17,22,0.06),0_8px_24px_-12px_var(--c-shadow)] dark:ring-1 dark:ring-line; }
+@utility card-link { @apply card block transition hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(16,17,22,0.06),0_16px_32px_-12px_var(--c-shadow)]; }
+@utility form-label { @apply mb-1.5 block text-sm font-semibold text-fg; }
+@utility form-input { @apply block w-full rounded-lg border border-line-strong bg-surface px-4 py-3 text-base text-fg placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-gold/40; }
 @utility form-error { @apply mt-1.5 text-sm font-medium text-ember; }
 @utility form-help { @apply mt-1.5 text-sm text-muted; }
 @utility badge { @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold; }
 @utility badge-live { @apply badge bg-ember text-white; }
-@utility badge-muted { @apply badge bg-ink/5 text-ink; }
-@utility media-fallback { @apply bg-[radial-gradient(120%_120%_at_20%_10%,#3a2f1b_0%,#101116_55%)]; }
+@utility badge-muted { @apply badge bg-fg/5 text-fg; }
+/* Placeholder when an image is missing: follows the theme. */
+@utility media-fallback { background-image: var(--c-fallback); }
+/* Placeholder behind dark photo overlays (heroes, slideshow): always dark. */
+@utility media-fallback-dark { @apply bg-[radial-gradient(120%_120%_at_20%_10%,#3a2f1b_0%,#101116_55%)]; }
 
 @layer components {
-
     .prose-content { @apply max-w-none text-lg leading-relaxed text-body; }
     .prose-content p { @apply my-5; }
-    .prose-content h2 { @apply mt-12 mb-4 text-2xl font-bold text-ink; }
-    .prose-content h3 { @apply mt-8 mb-3 text-xl font-bold text-ink; }
-    .prose-content a { @apply text-gold-700 underline underline-offset-2; }
+    .prose-content h2 { @apply mt-12 mb-4 text-2xl font-bold text-fg; }
+    .prose-content h3 { @apply mt-8 mb-3 text-xl font-bold text-fg; }
+    .prose-content a { @apply text-accent underline underline-offset-2; }
     .prose-content ul { @apply my-5 list-disc pl-6; }
     .prose-content ol { @apply my-5 list-decimal pl-6; }
-    .prose-content blockquote { @apply my-8 border-l-4 border-gold pl-6 font-display text-xl italic text-ink; }
+    .prose-content blockquote { @apply my-8 border-l-4 border-gold pl-6 font-display text-xl italic text-fg; }
     .prose-content img { @apply my-8 rounded-(--radius-card); }
 
+    /*
+     * Site header. Solid and theme-coloured by default; pages that open with a
+     * full-bleed photo add data-overlay so it starts transparent with white text.
+     */
+    .site-header { --hdr-fg: var(--c-fg); --hdr-muted: var(--c-muted); --hdr-accent: var(--c-accent); background: var(--c-header); box-shadow: 0 1px 0 var(--c-line); backdrop-filter: blur(10px); }
+    .site-header[data-overlay]:not(.is-scrolled):not(.nav-open) { --hdr-fg: #ffffff; --hdr-muted: rgb(255 255 255 / 0.85); --hdr-accent: var(--color-gold); background: transparent; box-shadow: none; backdrop-filter: none; }
+    .site-header.is-scrolled { box-shadow: 0 8px 24px -12px var(--c-shadow); }
+    /* backdrop-filter would make the header the containing block of the fixed mobile menu. */
+    .site-header.nav-open { backdrop-filter: none; background: var(--c-canvas); }
+    .text-hdr { color: var(--hdr-fg); }
+    .text-hdr-muted { color: var(--hdr-muted); }
+    .text-hdr-accent { color: var(--hdr-accent); }
 }

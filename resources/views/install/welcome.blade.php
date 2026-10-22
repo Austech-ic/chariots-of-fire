@@ -2,7 +2,7 @@
 @section('content')
     @php $ok = ! in_array(false, $requirements, true); @endphp
     <div class="card p-6 sm:p-8">
-        <h1 class="text-2xl font-extrabold text-ink">Server check</h1>
+        <h1 class="text-2xl font-extrabold text-fg">Server check</h1>
         <ul class="mt-4 grid gap-2 sm:grid-cols-2">
             @foreach ($requirements as $label => $passed)
                 <li class="flex items-center gap-2 text-sm {{ $passed ? 'text-emerald-800' : 'font-semibold text-ember' }}">
@@ -11,7 +11,7 @@
             @endforeach
         </ul>
         @unless ($ok)
-            <p class="mt-4 rounded-lg bg-ember/10 p-3 text-sm text-ink">Fix the items in red (usually in your hosting control panel → “Select PHP version” / “PHP extensions”, or by setting folder permissions to 775), then reload this page.</p>
+            <p class="mt-4 rounded-lg bg-ember/10 p-3 text-sm text-fg">Fix the items in red (usually in your hosting control panel → “Select PHP version” / “PHP extensions”, or by setting folder permissions to 775), then reload this page.</p>
         @endunless
     </div>
 
@@ -19,7 +19,7 @@
         @csrf
         <x-flash />
         <section class="space-y-5">
-            <h2 class="text-xl font-bold text-ink">1. Website</h2>
+            <h2 class="text-xl font-bold text-fg">1. Website</h2>
             <div class="grid gap-5 sm:grid-cols-2">
                 <x-field name="site_name" label="Site name" required value="Flaming Chariot Outreach" />
                 <x-field name="app_url" type="url" label="Website address" required :value="request()->getSchemeAndHttpHost()" help="Use https:// once your SSL certificate is active." />
@@ -28,7 +28,7 @@
         </section>
 
         <section class="space-y-5">
-            <h2 class="text-xl font-bold text-ink">2. Database</h2>
+            <h2 class="text-xl font-bold text-fg">2. Database</h2>
             <p class="text-sm text-muted">Create a MySQL database and user in your hosting panel (cPanel → MySQL Databases), give the user ALL PRIVILEGES, then enter the details here.</p>
             <div>
                 <label for="db_connection" class="form-label">Database type</label>
@@ -49,7 +49,7 @@
         </section>
 
         <section class="space-y-5">
-            <h2 class="text-xl font-bold text-ink">3. First administrator</h2>
+            <h2 class="text-xl font-bold text-fg">3. First administrator</h2>
             <div class="grid gap-5 sm:grid-cols-2">
                 <x-field name="admin_name" label="Full name" required />
                 <x-field name="admin_email" type="email" label="Email" required />

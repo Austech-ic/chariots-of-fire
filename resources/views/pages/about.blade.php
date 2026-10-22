@@ -1,5 +1,5 @@
 @php $t = $page?->translation(); @endphp
-<x-layouts.app :title="$t?->meta_title ?? $t?->title ?? __('About us')" :description="$t?->meta_description ?? $t?->summary" :image="$page?->image">
+<x-layouts.app :title="$t?->meta_title ?? $t?->title ?? __('About us')" :description="$t?->meta_description ?? $t?->summary" :image="$page?->image" :overlay-header="(bool) ($page?->image)?->isPublic()">
     <x-page-hero :eyebrow="__('About us')" :title="$t?->title ?? setting('site_name')" :intro="$t?->summary" :image="$page?->image" />
 
     @if ($t?->body)
@@ -9,17 +9,17 @@
     @endif
 
     @if ($mandates->isNotEmpty())
-        <section id="mandates" class="section bg-ink text-white scroll-mt-20">
+        <section id="mandates" class="section bg-band text-band-fg scroll-mt-20">
             <div class="container-site">
-                <p class="eyebrow-light">{{ __('Ministry mandates') }}</p>
+                <p class="eyebrow">{{ __('Ministry mandates') }}</p>
                 <h2 class="mt-3 text-3xl font-extrabold sm:text-4xl">{{ __('Areas of service') }}</h2>
                 <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($mandates as $mandate)
-                        <a href="{{ lroute('mandates.show', $mandate) }}" class="group block overflow-hidden rounded-(--radius-card) bg-ink-800 ring-1 ring-white/10 transition hover:ring-gold/60">
+                        <a href="{{ lroute('mandates.show', $mandate) }}" class="group block overflow-hidden rounded-(--radius-card) bg-band-card ring-1 ring-band-line transition hover:ring-gold/60">
                             <x-picture :asset="$mandate->image" alt="" class="aspect-[16/9]" variant="sm" sizes="(min-width:1024px) 33vw, 100vw" />
                             <div class="p-6">
-                                <h3 class="flex items-center gap-2 text-xl font-bold group-hover:text-gold"><x-glyph :name="$mandate->icon ?: 'flame'" class="size-5 text-gold" /> {{ $mandate->tr('title') }}</h3>
-                                <p class="mt-2 text-white/70">{{ $mandate->tr('summary') }}</p>
+                                <h3 class="flex items-center gap-2 text-xl font-bold group-hover:text-accent"><x-glyph :name="$mandate->icon ?: 'flame'" class="size-5 text-accent" /> {{ $mandate->tr('title') }}</h3>
+                                <p class="mt-2 text-band-muted">{{ $mandate->tr('summary') }}</p>
                             </div>
                         </a>
                     @endforeach
@@ -47,7 +47,7 @@
         </section>
     @endif
 
-    <section class="section bg-ivory-200/60">
+    <section class="section bg-canvas-alt">
         <div class="container-site flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div>
                 <h2 class="section-title">{{ __('Get involved') }}</h2>

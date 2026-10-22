@@ -6,7 +6,7 @@ Designed to install on ordinary **shared hosting** (cPanel) as well as a VPS.
 
 | Area | What it does |
 | --- | --- |
-| Public website | Cinematic homepage slideshow, about/mandates/founder, live streaming, sermon library (audio, video, YouTube), programmes with registration & calendar files, gallery, counselling, giving, contact, newsletter — multilingual |
+| Public website | Light (default) and dark themes, cinematic homepage slideshow, about/mandates/founder, live streaming, sermon library (audio, video, YouTube), programmes with registration & calendar files, gallery, counselling, giving, contact, newsletter — multilingual |
 | Staff CMS (`/admin`) | Draft → review → scheduled → published workflow, media library, homepage manager, sermons, livestreams, events, galleries, confidential counselling, appointments, donations & reconciliation, newsletter consent, members, translations, settings, audit log |
 | Member portal (`/member`) | Verified accounts, appointments, event registrations, giving history, member-only resources, SMS/WhatsApp/newsletter preferences, account/data requests |
 
@@ -44,7 +44,7 @@ image jobs.
 php artisan test
 ```
 
-The suite (82 tests) maps to the PRD acceptance cases FCO-001 … FCO-025 and
+The suite (87 tests) maps to the PRD acceptance cases FCO-001 … FCO-025 and
 the security cases in §10.2, and passes on SQLite, MySQL/MariaDB and
 PostgreSQL. CI runs it on PHP 8.3/8.4 and MySQL 8, audits dependencies and
 checks that committed frontend assets are up to date.

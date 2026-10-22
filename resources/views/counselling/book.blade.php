@@ -24,7 +24,7 @@
                 @if ($service)
                     @if ($service->requires_account && ! auth()->check())
                         <div class="mt-6 rounded-xl bg-gold/10 p-5">
-                            <p class="font-semibold text-ink">{{ __('Please sign in to book this service.') }}</p>
+                            <p class="font-semibold text-fg">{{ __('Please sign in to book this service.') }}</p>
                             <a href="{{ route('login') }}" class="btn-dark btn-sm mt-3">{{ __('Sign in') }}</a>
                         </div>
                     @else
@@ -33,7 +33,7 @@
                             <input type="hidden" name="service" value="{{ $service->slug }}">
                             <div class="card p-6">
                                 <div class="flex flex-wrap items-center justify-between gap-3">
-                                    <h2 class="text-lg font-bold text-ink">{{ __('2. Pick a time') }}</h2>
+                                    <h2 class="text-lg font-bold text-fg">{{ __('2. Pick a time') }}</h2>
                                     <div class="flex gap-2 text-sm">
                                         @if ($weekStart->gt(now($tz)->startOfDay()))
                                             <a class="btn-outline btn-sm" href="{{ lroute('counselling.book', ['service' => $service->slug, 'week' => $weekStart->subDays(7)->toDateString()]) }}"><x-glyph name="arrow-left" class="size-4" /> {{ __('Earlier') }}</a>
@@ -43,18 +43,18 @@
                                 </div>
                                 @error('slot')<p class="form-error" role="alert">{{ $message }}</p>@enderror
                                 @if ($slots->isEmpty())
-                                    <p class="mt-6 text-muted">{{ __('No times are available this week. Try later dates, or') }} <a href="{{ lroute('counselling.request', ['service' => $service->slug]) }}" class="font-semibold text-gold-700 underline">{{ __('send a request') }}</a>.</p>
+                                    <p class="mt-6 text-muted">{{ __('No times are available this week. Try later dates, or') }} <a href="{{ lroute('counselling.request', ['service' => $service->slug]) }}" class="font-semibold text-accent underline">{{ __('send a request') }}</a>.</p>
                                 @else
                                     <fieldset class="mt-6 space-y-6">
                                         <legend class="sr-only">{{ __('Available times') }}</legend>
                                         @foreach ($slots as $day => $daySlots)
                                             <div>
-                                                <p class="text-sm font-bold text-ink">{{ \Carbon\Carbon::parse($day, $tz)->translatedFormat('l j F') }}</p>
+                                                <p class="text-sm font-bold text-fg">{{ \Carbon\Carbon::parse($day, $tz)->translatedFormat('l j F') }}</p>
                                                 <div class="mt-2 flex flex-wrap gap-2">
                                                     @foreach ($daySlots as $slot)
                                                         <label class="cursor-pointer">
                                                             <input type="radio" name="slot" value="{{ $slot->key() }}" class="peer sr-only" required @checked(old('slot') === $slot->key())>
-                                                            <span class="block rounded-full border border-ink/15 bg-white px-4 py-2 text-sm font-medium text-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-gold">
+                                                            <span class="block rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-fg peer-checked:border-fg peer-checked:bg-fg peer-checked:text-canvas peer-focus-visible:ring-2 peer-focus-visible:ring-gold">
                                                                 {{ $slot->start->setTimezone($tz)->format('g:i a') }}
                                                                 @if ($counsellors->count() > 1)<span class="opacity-70">· {{ $counsellors[$slot->counsellorId] ?? '' }}</span>@endif
                                                             </span>
@@ -69,7 +69,7 @@
 
                             @if ($slots->isNotEmpty())
                                 <div class="card space-y-5 p-6">
-                                    <h2 class="text-lg font-bold text-ink">{{ __('3. Your details') }}</h2>
+                                    <h2 class="text-lg font-bold text-fg">{{ __('3. Your details') }}</h2>
                                     <fieldset>
                                         <legend class="form-label">{{ __('Appointment format') }}</legend>
                                         <div class="flex flex-wrap gap-4">

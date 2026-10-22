@@ -4,14 +4,14 @@
     <section class="section pt-10">
         <div class="container-site">
             <div class="flex flex-wrap items-center justify-between gap-4">
-                <nav class="inline-flex rounded-full bg-white p-1 shadow-sm" aria-label="{{ __('Event views') }}">
-                    <a href="{{ lroute('events.index', array_filter(['category' => $category])) }}" class="rounded-full px-5 py-2 text-sm font-semibold {{ $view === 'upcoming' ? 'bg-ink text-white' : 'text-ink' }}" @if ($view === 'upcoming') aria-current="page" @endif>{{ __('Upcoming') }}</a>
-                    <a href="{{ lroute('events.index', array_filter(['view' => 'past', 'category' => $category])) }}" class="rounded-full px-5 py-2 text-sm font-semibold {{ $view === 'past' ? 'bg-ink text-white' : 'text-ink' }}" @if ($view === 'past') aria-current="page" @endif>{{ __('Past events') }}</a>
+                <nav class="inline-flex rounded-full bg-surface p-1 shadow-sm" aria-label="{{ __('Event views') }}">
+                    <a href="{{ lroute('events.index', array_filter(['category' => $category])) }}" class="rounded-full px-5 py-2 text-sm font-semibold {{ $view === 'upcoming' ? 'bg-fg text-canvas' : 'text-fg' }}" @if ($view === 'upcoming') aria-current="page" @endif>{{ __('Upcoming') }}</a>
+                    <a href="{{ lroute('events.index', array_filter(['view' => 'past', 'category' => $category])) }}" class="rounded-full px-5 py-2 text-sm font-semibold {{ $view === 'past' ? 'bg-fg text-canvas' : 'text-fg' }}" @if ($view === 'past') aria-current="page" @endif>{{ __('Past events') }}</a>
                 </nav>
                 @if ($categories->isNotEmpty())
                     <form method="GET" action="{{ lroute('events.index') }}" class="flex items-center gap-2">
                         @if ($view === 'past')<input type="hidden" name="view" value="past">@endif
-                        <label for="ev-cat" class="text-sm font-semibold text-ink">{{ __('Category') }}</label>
+                        <label for="ev-cat" class="text-sm font-semibold text-fg">{{ __('Category') }}</label>
                         <select id="ev-cat" name="category" class="form-input w-auto py-2" data-auto-submit>
                             <option value="">{{ __('All') }}</option>
                             @foreach ($categories as $cat)<option value="{{ $cat }}" @selected($category === $cat)>{{ $cat }}</option>@endforeach

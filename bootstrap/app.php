@@ -30,6 +30,8 @@ return Application::configure(basePath: $basePath)
         $middleware->web(prepend: [RedirectIfNotInstalled::class], append: [SetLocale::class, SecurityHeaders::class]);
         $middleware->alias(['active' => EnsureAccountActive::class]);
         $middleware->preventRequestForgery(except: ['webhooks/*']);
+        // The theme preference is set from JavaScript, so it is stored unencrypted (it holds only 'light' or 'dark').
+        $middleware->encryptCookies(except: [\App\Support\Theme::COOKIE]);
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('member.dashboard'));
 

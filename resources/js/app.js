@@ -11,6 +11,7 @@ function initNav() {
         toggle.setAttribute('aria-expanded', String(open));
         panel.hidden = !open;
         document.body.classList.toggle('overflow-hidden', open);
+        document.querySelector('[data-sticky-header]')?.classList.toggle('nav-open', open);
     };
     toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { setOpen(false); toggle.focus(); } });
@@ -151,8 +152,33 @@ function initAutoSubmit() {
     document.querySelectorAll('[data-auto-submit]').forEach((el) => el.addEventListener('change', () => el.form?.submit()));
 }
 
+function initThemeToggle() {
+    const root = document.documentElement;
+    const apply = (mode) => {
+        root.classList.toggle('dark', mode === 'dark');
+        root.dataset.theme = mode;
+        document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', mode);
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', mode === 'dark' ? '#101116' : '#f7f4ee');
+        const secure = location.protocol === 'https:' ? '; Secure' : '';
+        document.cookie = `fco_theme=${mode}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+        document.querySelectorAll('[data-theme-toggle]').forEach((el) => {
+            const label = mode === 'dark' ? el.dataset.labelDark : el.dataset.labelLight;
+            el.setAttribute('aria-label', label);
+            el.setAttribute('title', label);
+            el.setAttribute('href', `/theme/${mode === 'dark' ? 'light' : 'dark'}`);
+        });
+    };
+    document.querySelectorAll('[data-theme-toggle]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            apply(root.classList.contains('dark') ? 'light' : 'dark');
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initNav();
+    initThemeToggle();
     document.querySelectorAll('[data-slideshow]').forEach(initSlideshow);
     initImageFallbacks();
     initLightbox();

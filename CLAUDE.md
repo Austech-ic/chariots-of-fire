@@ -24,4 +24,9 @@ Laravel 13 + Filament 5 app that must keep working on **shared hosting**. Read
 - Store money as integer minor units (`App\Support\Money`), instants in UTC,
   display in `config('app.display_timezone')` (Africa/Lagos).
 - Public pages: no inline scripts or event handlers (CSP); vanilla JS in `resources/js/app.js`.
+- Light/dark theme: light is the default; `<html class="dark">` comes from the `fco_theme` cookie
+  (`App\Support\Theme`). Use the semantic colour tokens (`bg-canvas`, `bg-surface`, `text-fg`,
+  `text-body`, `text-muted`, `text-accent`, `border-line`, and `bg-band`/`text-band-*` for feature
+  bands) — never raw `bg-white`/`text-ink` on theme-dependent surfaces. Keep `text-white` only on
+  photos/overlays, gold or ember fills, and the always-dark footer.
 - Never invent ministry facts (biographies, history); use clearly marked placeholders.

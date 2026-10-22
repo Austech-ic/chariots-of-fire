@@ -5,8 +5,8 @@
     @else
         <div class="card overflow-x-auto">
             <table class="w-full text-left text-sm">
-                <thead class="bg-ivory"><tr><th class="p-4">{{ __('Date') }}</th><th class="p-4">{{ __('Purpose') }}</th><th class="p-4">{{ __('Amount') }}</th><th class="p-4">{{ __('Reference') }}</th><th class="p-4">{{ __('Status') }}</th></tr></thead>
-                <tbody class="divide-y divide-ink/10">
+                <thead class="bg-canvas"><tr><th class="p-4">{{ __('Date') }}</th><th class="p-4">{{ __('Purpose') }}</th><th class="p-4">{{ __('Amount') }}</th><th class="p-4">{{ __('Reference') }}</th><th class="p-4">{{ __('Status') }}</th></tr></thead>
+                <tbody class="divide-y divide-line">
                     @foreach ($donations as $d)
                         <tr><td class="p-4">{{ local_time($d->paid_at, 'j M Y') }}</td><td class="p-4">{{ $d->campaign?->name ?? __('General giving') }}</td><td class="p-4 font-semibold">{{ $d->formattedAmount() }}</td><td class="p-4 font-mono text-xs">{{ $d->reference }}</td><td class="p-4">{{ __(\App\Models\Donation::STATUSES[$d->status]) }}</td></tr>
                     @endforeach

@@ -4,7 +4,7 @@
     </div>
 @endif
 @if ($errors->any())
-    <div role="alert" class="mb-6 rounded-xl border border-ember/30 bg-ember/5 p-4 text-ink">
+    <div role="alert" class="mb-6 rounded-xl border border-ember/30 bg-ember/5 p-4 text-fg">
         <p class="font-semibold">{{ __('Please check the form:') }}</p>
         <ul class="mt-2 list-disc pl-5 text-sm">
             @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach

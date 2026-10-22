@@ -12,8 +12,8 @@
         <button class="btn-dark">{{ __('Submit request') }}</button>
     </form>
     @if ($requests->isNotEmpty())
-        <h2 class="mt-10 text-lg font-bold text-ink">{{ __('Previous requests') }}</h2>
-        <ul class="card mt-4 divide-y divide-ink/10">
+        <h2 class="mt-10 text-lg font-bold text-fg">{{ __('Previous requests') }}</h2>
+        <ul class="card mt-4 divide-y divide-line">
             @foreach ($requests as $r)
                 <li class="flex justify-between p-4 text-sm"><span>{{ __(\App\Models\AccountRequest::TYPES[$r->type]) }} · {{ local_time($r->created_at, 'j M Y') }}</span><span class="badge-muted">{{ ucfirst($r->status) }}</span></li>
             @endforeach

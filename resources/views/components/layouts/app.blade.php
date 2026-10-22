@@ -1,13 +1,14 @@
-@props(['title' => null, 'description' => null, 'image' => null, 'solidHeader' => false, 'canonical' => null, 'noindex' => false])
+@props(['title' => null, 'description' => null, 'image' => null, 'overlayHeader' => false, 'canonical' => null, 'noindex' => false])
 @php
     $siteName = setting('site_name');
     $fullTitle = $title ? $title.' · '.$siteName : $siteName.' — '.setting('tagline');
     $metaDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($description ?? setting('tagline'))), 160);
     $locales = \App\Support\Locales::all();
+    $darkMode = \App\Support\Theme::isDark();
     $ogImage = $image instanceof \App\Models\MediaAsset && $image->isPublic() ? $image->url('lg') : null;
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $locales[app()->getLocale()]['direction'] ?? 'ltr' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $locales[app()->getLocale()]['direction'] ?? 'ltr' }}" @class(['dark' => $darkMode]) data-theme="{{ $darkMode ? 'dark' : 'light' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +28,8 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
     @if ($ogImage)<meta property="og:image" content="{{ $ogImage }}"><meta name="twitter:card" content="summary_large_image">@endif
-    <meta name="theme-color" content="#101116">
+    <meta name="color-scheme" content="{{ $darkMode ? 'dark' : 'light' }}">
+    <meta name="theme-color" content="{{ $darkMode ? '#101116' : '#f7f4ee' }}">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +43,7 @@
 <body class="min-h-screen">
     <a href="#main" class="sr-only z-[100] rounded bg-gold px-4 py-2 font-semibold text-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{{ __('Skip to content') }}</a>
 
-    @include('layouts.partials.header', ['solid' => $solidHeader])
+    @include('layouts.partials.header', ['overlay' => $overlayHeader, 'darkMode' => $darkMode])
 
     <main id="main" tabindex="-1">
         {{ $slot }}

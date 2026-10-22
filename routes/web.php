@@ -16,6 +16,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SermonController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
@@ -95,6 +96,8 @@ Route::get('/appointments/{reference}', [AppointmentManageController::class, 'sh
 Route::post('/appointments/{reference}/accept', [AppointmentManageController::class, 'accept'])->middleware('throttle:forms')->name('appointments.accept');
 Route::post('/appointments/{reference}/decline', [AppointmentManageController::class, 'decline'])->middleware('throttle:forms')->name('appointments.decline');
 Route::post('/appointments/{reference}/cancel', [AppointmentManageController::class, 'cancel'])->middleware('throttle:forms')->name('appointments.cancel');
+
+Route::get('/theme/{mode}', ThemeController::class)->whereIn('mode', ['light', 'dark'])->name('theme.set');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 

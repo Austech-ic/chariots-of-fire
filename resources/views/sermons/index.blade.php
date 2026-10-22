@@ -2,7 +2,7 @@
     <x-page-hero :eyebrow="__('Watch & Listen')" :title="__('Sermons & series')" :intro="__('Messages that build faith — search by topic, speaker, series, language or date.')">
         <form method="GET" action="{{ lroute('sermons.index') }}" role="search" class="mt-8 flex max-w-xl gap-2">
             <label for="sermon-q" class="sr-only">{{ __('Search sermons') }}</label>
-            <input id="sermon-q" type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('Search titles, scriptures or speakers') }}" class="min-w-0 flex-1 rounded-full border-0 bg-white px-5 py-3 text-ink placeholder:text-muted/70 focus:ring-2 focus:ring-gold">
+            <input id="sermon-q" type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('Search titles, scriptures or speakers') }}" class="min-w-0 flex-1 rounded-full border-0 bg-surface px-5 py-3 text-fg placeholder:text-muted/70 focus:ring-2 focus:ring-gold">
             <button class="btn-primary"><x-glyph name="search" class="size-4" /><span class="sr-only sm:not-sr-only">{{ __('Search') }}</span></button>
         </form>
     </x-page-hero>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="flex flex-col justify-center p-8 lg:p-12">
                         <p class="eyebrow">{{ __('Featured message') }}</p>
-                        <h2 class="mt-3 text-3xl font-extrabold text-ink group-hover:text-gold-700">{{ $featured->tr('title') }}</h2>
+                        <h2 class="mt-3 text-3xl font-extrabold text-fg group-hover:text-accent">{{ $featured->tr('title') }}</h2>
                         <p class="mt-2 text-muted">{{ $featured->preached_at?->translatedFormat('j F Y') }} · {{ $featured->speakers->pluck('name')->join(', ') }}</p>
                         <p class="mt-4 text-body">{{ \Illuminate\Support\Str::limit($featured->tr('description'), 200) }}</p>
                         <span class="btn-dark mt-6 self-start"><x-glyph name="play" class="size-4" /> {{ __('Watch or listen') }}</span>
@@ -33,7 +33,7 @@
 
             @if ($featuredSeries->isNotEmpty())
                 <div class="mb-12">
-                    <h2 class="text-2xl font-bold text-ink">{{ __('Featured series') }}</h2>
+                    <h2 class="text-2xl font-bold text-fg">{{ __('Featured series') }}</h2>
                     <div class="mt-5 grid gap-4 sm:grid-cols-3">
                         @foreach ($featuredSeries as $s)
                             <a href="{{ lroute('sermons.index', ['series' => $s->slug]) }}" class="group relative block aspect-[16/9] overflow-hidden rounded-(--radius-card)">

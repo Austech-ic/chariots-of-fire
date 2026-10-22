@@ -14,6 +14,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Enums\ThemeMode;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -36,6 +37,8 @@ class AdminPanelProvider extends PanelProvider
             // Two-factor authentication (authenticator app) for staff; set REQUIRE_STAFF_MFA=true to enforce it.
             ->multiFactorAuthentication([AppAuthentication::make()->recoverable()], isRequired: (bool) config('fco.require_staff_mfa'))
             ->brandName('Flaming Chariot · CMS')
+            // Light by default; staff can switch to dark or system from the user menu.
+            ->defaultThemeMode(ThemeMode::Light)
             ->favicon(asset('favicon.svg'))
             ->colors([
                 'primary' => Color::hex('#a8823a'),

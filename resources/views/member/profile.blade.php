@@ -2,7 +2,7 @@
     <div class="space-y-6">
         <form method="POST" action="{{ route('member.profile.update') }}" class="card space-y-5 p-6">
             @csrf @method('PUT')
-            <h2 class="text-lg font-bold text-ink">{{ __('Profile') }}</h2>
+            <h2 class="text-lg font-bold text-fg">{{ __('Profile') }}</h2>
             <div class="grid gap-5 sm:grid-cols-2">
                 <x-field name="name" :label="__('Full name')" required :value="$user->name" autocomplete="name" />
                 <x-field name="email" type="email" :label="__('Email')" required :value="$user->email" autocomplete="email" :help="__('Changing your email requires verifying the new address.')" />
@@ -18,7 +18,7 @@
         </form>
         <form method="POST" action="{{ route('member.password.update') }}" class="card space-y-5 p-6">
             @csrf @method('PUT')
-            <h2 class="text-lg font-bold text-ink">{{ __('Change password') }}</h2>
+            <h2 class="text-lg font-bold text-fg">{{ __('Change password') }}</h2>
             <x-field name="current_password" type="password" :label="__('Current password')" required autocomplete="current-password" />
             <div class="grid gap-5 sm:grid-cols-2">
                 <x-field name="password" type="password" :label="__('New password')" required autocomplete="new-password" />

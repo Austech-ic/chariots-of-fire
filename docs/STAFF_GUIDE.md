@@ -3,6 +3,10 @@
 Sign in at **/admin**. On first sign-in open your profile (top-right avatar)
 and enable **two-factor authentication** with an authenticator app.
 
+Visitors see the website in **light mode** by default and can switch to dark
+mode with the moon/sun button in the header. The CMS also opens in light mode;
+change it from your user menu (top right).
+
 ## Roles
 
 | Role | Can do |

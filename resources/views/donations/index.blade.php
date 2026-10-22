@@ -16,8 +16,8 @@
                                     @foreach ($campaigns as $i => $campaign)
                                         <label class="cursor-pointer">
                                             <input type="radio" name="campaign" value="{{ $campaign->slug }}" class="peer sr-only" @checked(old('campaign', $selectedCampaign ?? $campaigns->first()->slug) === $campaign->slug)>
-                                            <span class="block rounded-xl border border-ink/15 bg-white p-4 peer-checked:border-ink peer-checked:ring-2 peer-checked:ring-gold peer-focus-visible:ring-2 peer-focus-visible:ring-gold">
-                                                <span class="block font-semibold text-ink">{{ $campaign->name }}</span>
+                                            <span class="block rounded-xl border border-line bg-surface p-4 peer-checked:border-fg peer-checked:ring-2 peer-checked:ring-gold peer-focus-visible:ring-2 peer-focus-visible:ring-gold">
+                                                <span class="block font-semibold text-fg">{{ $campaign->name }}</span>
                                                 @if ($campaign->description)<span class="mt-1 block text-sm text-muted">{{ \Illuminate\Support\Str::limit($campaign->description, 90) }}</span>@endif
                                             </span>
                                         </label>
@@ -31,7 +31,7 @@
                             @if ($presets)
                                 <div class="mb-3 flex flex-wrap gap-2" role="group" aria-labelledby="amount-label">
                                     @foreach ($presets as $preset)
-                                        <button type="button" data-amount-preset="{{ $preset }}" aria-pressed="false" class="rounded-full border border-ink/15 bg-white px-4 py-2 text-sm font-semibold text-ink aria-pressed:bg-ink aria-pressed:text-white">{{ number_format((float) $preset) }}</button>
+                                        <button type="button" data-amount-preset="{{ $preset }}" aria-pressed="false" class="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-fg aria-pressed:bg-fg aria-pressed:text-canvas">{{ number_format((float) $preset) }}</button>
                                     @endforeach
                                 </div>
                             @endif
@@ -60,14 +60,14 @@
                 @endif
             </div>
             <aside class="space-y-6 lg:col-span-5">
-                <div class="rounded-(--radius-card) bg-ink p-8 text-white">
-                    <x-glyph name="heart" class="size-8 text-gold" />
+                <div class="rounded-(--radius-card) bg-band p-8 text-band-fg">
+                    <x-glyph name="heart" class="size-8 text-accent" />
                     <h2 class="mt-4 text-2xl font-bold">{{ __('Giving with confidence') }}</h2>
-                    <ul class="mt-4 space-y-3 text-white/80">
-                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-gold" /> {{ __('Payments are processed by a licensed provider.') }}</li>
-                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-gold" /> {{ __('Your gift is recorded only after the provider confirms it.') }}</li>
-                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-gold" /> {{ __('A receipt is emailed to you after confirmation.') }}</li>
-                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-gold" /> {{ __('Members can view their giving history in the member portal.') }}</li>
+                    <ul class="mt-4 space-y-3 text-band-muted">
+                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-accent" /> {{ __('Payments are processed by a licensed provider.') }}</li>
+                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-accent" /> {{ __('Your gift is recorded only after the provider confirms it.') }}</li>
+                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-accent" /> {{ __('A receipt is emailed to you after confirmation.') }}</li>
+                        <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-accent" /> {{ __('Members can view their giving history in the member portal.') }}</li>
                     </ul>
                 </div>
             </aside>

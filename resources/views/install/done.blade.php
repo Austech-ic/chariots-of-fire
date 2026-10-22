@@ -1,8 +1,8 @@
 @extends('install.layout')
 @section('content')
     <div class="card p-8">
-        <x-glyph name="check" class="size-12 text-gold-700" />
-        <h1 class="mt-4 text-3xl font-extrabold text-ink">Installation complete</h1>
+        <x-glyph name="check" class="size-12 text-accent" />
+        <h1 class="mt-4 text-3xl font-extrabold text-fg">Installation complete</h1>
         <ol class="mt-6 list-decimal space-y-3 pl-5 text-body">
             <li>Add <strong>one cron job</strong> in your hosting panel (every minute):<br>
                 <code class="mt-1 block overflow-x-auto rounded bg-ink p-3 text-xs text-white">* * * * * php {{ base_path('artisan') }} schedule:run &gt;&gt; /dev/null 2&gt;&amp;1</code>

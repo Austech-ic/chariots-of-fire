@@ -38,6 +38,17 @@ config/fco.php           all application settings (env-driven)
 
 ## Key design decisions
 
+**Light and dark themes.** Light is the default. A sun/moon toggle in the header
+switches instantly (JavaScript) and stores the choice in the unencrypted
+`fco_theme` cookie; the server reads it to render `<html class="dark">`, so
+there is no flash of the wrong theme and the toggle also works without
+JavaScript (`/theme/{light|dark}`). Colours come from CSS variables in
+`resources/css/app.css` exposed as Tailwind tokens (`canvas`, `surface`, `fg`,
+`body`, `muted`, `accent`, `line`, `band-*`). Photo heroes and the homepage
+slideshow keep a dark overlay with white text in both themes; pages that open
+with one pass `overlay-header` so the header starts transparent. The admin
+panel defaults to light (staff can change it in the user menu).
+
 **Translations.** Editorial content lives in `<entity>_translations` tables
 with a unique `(parent_id, locale)` constraint and an *approved* flag.
 `$model->tr('title')` returns the approved translation for the current locale
