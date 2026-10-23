@@ -6,6 +6,9 @@
  */
 return [
 
+    // Application release (shown on System status; bump with each release zip).
+    'version' => '1.2.0',
+
     'display_timezone' => env('APP_DISPLAY_TIMEZONE', 'Africa/Lagos'),
 
     // Force staff to set up authenticator-app two-factor authentication before using the CMS.

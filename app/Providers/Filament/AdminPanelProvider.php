@@ -36,10 +36,14 @@ class AdminPanelProvider extends PanelProvider
             ->profile(isSimple: false)
             // Two-factor authentication (authenticator app) for staff; set REQUIRE_STAFF_MFA=true to enforce it.
             ->multiFactorAuthentication([AppAuthentication::make()->recoverable()], isRequired: (bool) config('fco.require_staff_mfa'))
-            ->brandName('Flaming Chariot · CMS')
+            ->brandName(fn () => setting('site_name').' · CMS')
+            // Logos and favicon follow Site settings (falls back to the name when no logo is uploaded).
+            ->brandLogo(fn () => \App\Support\Branding::logo()?->url())
+            ->darkModeBrandLogo(fn () => \App\Support\Branding::logoOnDark()?->url())
+            ->brandLogoHeight('2.25rem')
             // Light by default; staff can switch to dark or system from the user menu.
             ->defaultThemeMode(ThemeMode::Light)
-            ->favicon(asset('favicon.svg'))
+            ->favicon(fn () => \App\Support\Branding::faviconUrl())
             ->colors([
                 'primary' => Color::hex('#a8823a'),
                 'gray' => Color::Zinc,

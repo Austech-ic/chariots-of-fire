@@ -32,7 +32,8 @@ app/
     Messaging/           SMS/WhatsApp drivers: log, Termii, Twilio, WhatsApp Cloud API
     Payments/            PaymentGateway contract; Paystack, Flutterwave, Test; DonationService
     Streaming/           StreamProvider contract; YouTube, Vimeo, allow-listed embed URL
-  Support/               Locales, Settings, Audit, Money, Permissions catalogue, Installer
+  Support/               Locales, Settings, Branding (logo/favicon/share image), SystemHealth,
+                         Audit, Money, Permissions catalogue, Installer
 config/fco.php           all application settings (env-driven)
 ```
 
@@ -48,6 +49,14 @@ JavaScript (`/theme/{light|dark}`). Colours come from CSS variables in
 slideshow keep a dark overlay with white text in both themes; pages that open
 with one pass `overlay-header` so the header starts transparent. The admin
 panel defaults to light (staff can change it in the user menu).
+
+**Branding and settings.** Site settings are key/value rows (`site_settings`),
+cached and read with `setting()`, so new settings need no migration. Logo,
+favicon and share image are media-library assets referenced by id; saving them
+in *Site settings* makes them public. `App\Support\Branding` falls back to the
+built-in flame mark and `public/favicon.svg`. SVG uploads are refused (XSS).
+*System status* (`SystemHealth`) lets staff without SSH run pending migrations,
+clear caches and check the scheduler, whose heartbeat it records every minute.
 
 **Translations.** Editorial content lives in `<entity>_translations` tables
 with a unique `(parent_id, locale)` constraint and an *approved* flag.

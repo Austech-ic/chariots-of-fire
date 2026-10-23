@@ -2,17 +2,19 @@
     $social = array_filter([
         'youtube' => setting('social_youtube'), 'facebook' => setting('social_facebook'),
         'instagram' => setting('social_instagram'), 'x-social' => setting('social_x'),
+        'tiktok' => setting('social_tiktok'), 'telegram' => setting('social_telegram'),
     ]);
+    $serviceTimes = array_filter(array_map('trim', preg_split('/\R/', (string) setting('service_times'))));
 @endphp
 <footer class="bg-ink text-white/80 dark:border-t dark:border-white/10">
     <div class="container-site grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div class="lg:col-span-1">
-            <p class="font-display text-lg font-extrabold text-white">{{ setting('site_name') }}</p>
+            <a href="{{ lroute('home') }}" class="inline-flex text-white" aria-label="{{ setting('site_name') }} — {{ __('Home') }}"><x-site-logo context="footer" /></a>
             <p class="mt-3 text-sm">{{ setting('footer_text') ?? setting('tagline') }}</p>
             @if ($social)
                 <div class="mt-5 flex gap-2">
                     @foreach ($social as $icon => $url)
-                        <a href="{{ $url }}" class="rounded-full bg-white/5 p-2.5 hover:bg-gold hover:text-ink" rel="noopener" target="_blank" aria-label="{{ ucfirst(str_replace('-social', '', $icon)) }}"><x-glyph :name="$icon" class="size-4" /></a>
+                        <a href="{{ $url }}" class="rounded-full bg-white/5 p-2.5 hover:bg-gold hover:text-ink" rel="noopener" target="_blank" aria-label="{{ ['x-social' => 'X', 'youtube' => 'YouTube', 'tiktok' => 'TikTok'][$icon] ?? ucfirst($icon) }}"><x-glyph :name="$icon" class="size-4" /></a>
                     @endforeach
                 </div>
             @endif
@@ -44,6 +46,7 @@
             <ul class="mt-4 space-y-3 text-sm">
                 @if (setting('contact_address'))<li class="flex gap-2"><x-glyph name="map-pin" class="mt-0.5 size-4 shrink-0 text-gold" /> <span>{{ setting('contact_address') }}</span></li>@endif
                 @if (setting('contact_phone'))<li class="flex gap-2"><x-glyph name="phone" class="mt-0.5 size-4 shrink-0 text-gold" /> <a class="hover:text-white" href="tel:{{ preg_replace('/[^0-9+]/', '', setting('contact_phone')) }}">{{ setting('contact_phone') }}</a></li>@endif
+                @foreach ($serviceTimes as $time)<li class="flex gap-2"><x-glyph name="clock" class="mt-0.5 size-4 shrink-0 text-gold" /> <span>{{ $time }}</span></li>@endforeach
                 @if (setting('contact_email'))<li class="flex gap-2"><x-glyph name="mail" class="mt-0.5 size-4 shrink-0 text-gold" /> <a class="hover:text-white" href="mailto:{{ setting('contact_email') }}">{{ setting('contact_email') }}</a></li>@endif
             </ul>
             <form method="POST" action="{{ lroute('newsletter.subscribe') }}" class="mt-6">

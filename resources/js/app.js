@@ -9,6 +9,7 @@ function initNav() {
     if (!toggle || !panel) return;
     const setOpen = (open) => {
         toggle.setAttribute('aria-expanded', String(open));
+        if (open) panel.style.top = `${Math.round(document.querySelector('[data-sticky-header]').getBoundingClientRect().bottom)}px`;
         panel.hidden = !open;
         document.body.classList.toggle('overflow-hidden', open);
         document.querySelector('[data-sticky-header]')?.classList.toggle('nav-open', open);

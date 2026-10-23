@@ -85,8 +85,26 @@ notice on the event page.
 
 ## System
 
-- *Site settings*: name, tagline, contact details, social links, counselling and
-  giving text, donation presets and currencies.
+- *Site settings*:
+  - **Identity & logo**: site name and tagline; upload the **logo** (PNG or WebP
+    with a transparent background — one for light backgrounds and, optionally, a
+    white version for dark mode, photo headers and the footer); logo height and
+    whether the name is shown beside it; **favicon** (browser tab icon, square
+    PNG), **default share image** for WhatsApp/Facebook/X, default search
+    description, and an optional **announcement bar** across the top of every page.
+    The logo also appears on the CMS sign-in page and sidebar.
+  - **Contact & social**: email, phone, WhatsApp, address, **service times** (one
+    per line, shown in the footer and on the Contact page), a **Google Maps
+    embed** (Google Maps → Share → *Embed a map* → copy only the `src` address),
+    and YouTube, Facebook, Instagram, X, TikTok and Telegram links.
+  - **Menu**: choose published pages to add under *About* in the main menu. (Tick
+    *Show in footer* on a page to list it in the footer.)
+  - **Counselling** and **Giving** text, donation presets, currencies and optional
+    **bank transfer details** shown on the Give page.
+- *System status*: health checks (database updates, cron job, queue, email,
+  payments, HTTPS, debug mode, backups) and buttons to back up, clear caches,
+  process the queue, send yourself a test email and — after a website update —
+  **Run database updates**.
 - *Languages*: enable a language to publish it under `/<code>/…`; content
   without an approved translation falls back to English.
 - *Staff accounts*: new staff receive an email to set their own password.

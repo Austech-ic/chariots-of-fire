@@ -29,8 +29,31 @@ class Settings
         'giving_intro' => null,
         'donation_presets' => '5000,10000,25000,50000,100000',
         'donation_currencies' => 'NGN',
-        'default_og_image' => null,
+        // Branding (MediaAsset ids; images become public when saved).
+        'logo_asset_id' => null,
+        'logo_dark_asset_id' => null,
+        'favicon_asset_id' => null,
+        'og_image_asset_id' => null,
+        'show_site_name' => '1',
+        'logo_height' => '40',
+        // Search engines and sharing
+        'seo_description' => null,
+        // Worship and contact details
+        'service_times' => null,
+        'map_embed_url' => null,
+        'social_tiktok' => null,
+        'social_telegram' => null,
+        // Offline giving (bank transfer) shown on the Give page
+        'bank_transfer_details' => null,
+        // Announcement bar shown above the header on every page
+        'announcement_text' => null,
+        'announcement_url' => null,
+        // Extra CMS pages listed in the main menu (comma-separated page ids, in order)
+        'menu_page_ids' => null,
     ];
+
+    /** Settings rendered on public pages; keys that hold media ids. */
+    public const MEDIA_KEYS = ['logo_asset_id', 'logo_dark_asset_id', 'favicon_asset_id', 'og_image_asset_id'];
 
     public static function all(): array
     {
@@ -62,6 +85,7 @@ class Settings
 
     public static function flush(): void
     {
+        Branding::flush();
         Cache::forget(self::CACHE_KEY);
     }
 }

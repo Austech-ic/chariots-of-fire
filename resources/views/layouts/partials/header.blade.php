@@ -4,6 +4,8 @@
             ['label' => __('Vision & mission'), 'url' => lroute('about')],
             ['label' => __('Ministry mandates'), 'url' => lroute('about').'#mandates'],
             ['label' => __('Our founder'), 'url' => lroute('founder')],
+            // Extra pages chosen in Site settings → Menu.
+            ...($menuPages ?? collect())->map(fn ($p) => ['label' => $p->tr('title'), 'url' => lroute('pages.show', $p)])->all(),
         ]],
         ['label' => __('Watch & Listen'), 'children' => [
             ['label' => __('Live streaming'), 'url' => lroute('live')],
@@ -20,13 +22,18 @@
     $locales = \App\Support\Locales::all();
 @endphp
 <header data-sticky-header @if ($overlay) data-overlay @endif class="site-header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300">
+    @if (setting('announcement_text'))
+        <div class="bg-gold px-4 py-2 text-center text-sm font-semibold text-ink">
+            @if (setting('announcement_url'))
+                <a href="{{ localize_url(setting('announcement_url')) }}" class="underline-offset-2 hover:underline">{{ setting('announcement_text') }} <span aria-hidden="true">→</span></a>
+            @else
+                {{ setting('announcement_text') }}
+            @endif
+        </div>
+    @endif
     <div class="container-site flex h-18 items-center justify-between gap-4 py-3 lg:h-20">
-        <a href="{{ lroute('home') }}" class="flex items-center gap-3 text-hdr" aria-label="{{ setting('site_name') }} — {{ __('Home') }}">
-            <span class="flex size-10 items-center justify-center rounded-full bg-gold text-ink"><x-glyph name="flame" class="size-6" /></span>
-            <span class="font-display leading-none">
-                <span class="block text-base font-extrabold tracking-wide">FLAMING CHARIOT</span>
-                <span class="text-hdr-accent block text-[0.65rem] font-semibold tracking-[0.35em]">OUTREACH</span>
-            </span>
+        <a href="{{ lroute('home') }}" class="flex min-w-0 items-center text-hdr" aria-label="{{ setting('site_name') }} — {{ __('Home') }}">
+            <x-site-logo context="header" />
         </a>
 
         <nav class="hidden items-center gap-1 lg:flex" aria-label="{{ __('Main navigation') }}">
@@ -85,7 +92,7 @@
         </div>
     </div>
 
-    <div id="mobile-nav" data-nav-panel hidden class="fixed inset-0 top-[4.5rem] z-40 overflow-y-auto bg-canvas px-4 pb-10 pt-4 lg:hidden">
+    <div id="mobile-nav" data-nav-panel hidden class="fixed inset-x-0 bottom-0 top-[4.5rem] z-40 overflow-y-auto bg-canvas px-4 pb-10 pt-4 lg:hidden">
         <nav aria-label="{{ __('Mobile navigation') }}" class="space-y-6">
             @if ($liveNow)
                 <a href="{{ lroute('live') }}" class="badge-live"><span class="size-2 animate-pulse rounded-full bg-white"></span> {{ __('Watch Live') }}</a>

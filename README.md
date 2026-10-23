@@ -35,6 +35,8 @@ image jobs.
 - **Shared hosting:** follow [docs/SHARED_HOSTING.md](docs/SHARED_HOSTING.md).
   `scripts/build-release.sh` produces an upload-ready zip; a web installer at
   `/install` does the rest; one cron entry runs all background work.
+  Updates: `scripts/build-release.sh <version> --update`, extract over the site,
+  then *System status* → *Run database updates* / *Clear caches*.
 - **Architecture, security model and PRD traceability:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - **Staff guide to the CMS:** [docs/STAFF_GUIDE.md](docs/STAFF_GUIDE.md).
 
@@ -44,7 +46,7 @@ image jobs.
 php artisan test
 ```
 
-The suite (87 tests) maps to the PRD acceptance cases FCO-001 … FCO-025 and
+The suite (93 tests) maps to the PRD acceptance cases FCO-001 … FCO-025 and
 the security cases in §10.2, and passes on SQLite, MySQL/MariaDB and
 PostgreSQL. CI runs it on PHP 8.3/8.4 and MySQL 8, audits dependencies and
 checks that committed frontend assets are up to date.

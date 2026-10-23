@@ -158,4 +158,11 @@
     .text-hdr { color: var(--hdr-fg); }
     .text-hdr-muted { color: var(--hdr-muted); }
     .text-hdr-accent { color: var(--hdr-accent); }
+
+    /* Uploaded logo variants: dark-coloured logo on light header, light logo elsewhere. */
+    .site-header .logo-on-dark { display: none; }
+    .dark .site-header .logo-on-light,
+    .site-header[data-overlay]:not(.is-scrolled):not(.nav-open) .logo-on-light { display: none; }
+    .dark .site-header .logo-on-dark,
+    .site-header[data-overlay]:not(.is-scrolled):not(.nav-open) .logo-on-dark { display: block; }
 }

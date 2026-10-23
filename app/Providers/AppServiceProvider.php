@@ -110,10 +110,17 @@ class AppServiceProvider extends ServiceProvider
         Vite::useAggressivePrefetching();
 
         View::composer('layouts.partials.*', function ($view) {
-            $shared = request()->attributes->get('fco.layout') ?? rescue(fn () => [
-                'liveNow' => Cache::remember('fco.live-now', 30, fn () => Livestream::current()?->only(['id', 'title'])),
-                'footerPages' => Page::query()->published()->where('show_in_footer', true)->with('translations')->get(),
-            ], ['liveNow' => null, 'footerPages' => collect()], false);
+            // Each part fails independently so a database hiccup never breaks the whole layout.
+            $shared = request()->attributes->get('fco.layout') ?? [
+                'liveNow' => rescue(fn () => Cache::remember('fco.live-now', 30, fn () => Livestream::current()?->only(['id', 'title'])), null, false),
+                'footerPages' => rescue(fn () => Page::query()->published()->where('show_in_footer', true)->with('translations')->get(), collect(), false),
+                'menuPages' => rescue(function () {
+                    $ids = array_filter(array_map('intval', explode(',', (string) setting('menu_page_ids'))));
+
+                    return $ids ? Page::query()->published()->whereKey($ids)->with('translations')->get()
+                        ->sortBy(fn ($p) => array_search($p->id, $ids, true))->values() : collect();
+                }, collect(), false),
+            ];
             request()->attributes->set('fco.layout', $shared);
             $view->with($shared);
         });

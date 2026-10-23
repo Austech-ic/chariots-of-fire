@@ -153,13 +153,28 @@ After editing `.env`, nothing needs restarting. If you later run
 
 ## Updating
 
-1. Put the site in maintenance mode: create `storage/framework/down` via SSH
-   (`php artisan down`) or temporarily rename `public/index.php`.
-2. Back up (`php artisan fco:backup --media` or the host's backup tool).
-3. Upload the new release over the old files, **keeping** `.env` and `storage/`.
-4. Run migrations: SSH `php artisan migrate --force`, or a one-off cron job
-   with the same command.
-5. `php artisan optimize:clear`, then bring the site back up (`php artisan up`).
+Updates come as `flaming-chariot-<version>-update.zip`
+(`scripts/build-release.sh <version> --update`). It contains no `.env` and no
+`storage/` folder, so extracting it cannot overwrite your settings, uploads,
+logs or backups. No SSH is needed:
+
+1. **Back up first:** CMS → *System* → *System status* → **Back up now**
+   (or `php artisan fco:backup --media`, or the host's backup tool). Also keep
+   a copy of `.env`.
+2. In *File Manager*, upload the update zip into the folder that holds the site
+   (the one containing `.env`, `app/` and `public/`) and **Extract**, allowing it
+   to overwrite existing files.
+3. Sign in to the CMS and open *System* → *System status*:
+   - If it shows **Run database updates**, click it (super administrators only).
+   - Click **Clear caches**.
+4. Check the health list on the same page and the public website.
+
+Via SSH the equivalent is `php artisan down`, extract, `php artisan migrate
+--force`, `php artisan optimize:clear`, `php artisan up`.
+
+The *System status* page also shows whether the cron job is running, queued
+work, email/payment configuration, HTTPS, debug mode and the latest backup,
+and can send a test email or process the queue on demand.
 
 ## Backups and restore
 

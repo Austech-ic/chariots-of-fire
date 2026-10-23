@@ -70,6 +70,13 @@
                         <li class="flex gap-2"><x-glyph name="check" class="mt-0.5 size-4 shrink-0 text-accent" /> {{ __('Members can view their giving history in the member portal.') }}</li>
                     </ul>
                 </div>
+                @if (setting('bank_transfer_details'))
+                    <div class="card p-8">
+                        <h2 class="flex items-center gap-2 text-xl font-bold text-fg"><x-glyph name="banknotes" class="size-5 text-accent" /> {{ __('Give by bank transfer') }}</h2>
+                        <p class="mt-4 whitespace-pre-line font-mono text-sm leading-relaxed text-body">{{ setting('bank_transfer_details') }}</p>
+                        <p class="mt-4 text-xs text-muted">{{ __('Transfers are acknowledged by the ministry office, not through this website.') }}</p>
+                    </div>
+                @endif
             </aside>
         </div>
     </section>

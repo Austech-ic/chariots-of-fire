@@ -19,3 +19,7 @@ Schedule::command('fco:apply-retention')->dailyAt('02:20');
 Schedule::command('queue:prune-failed --hours=720')->daily();
 Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 Schedule::command('fco:backup')->dailyAt('03:15')->withoutOverlapping();
+
+// Heartbeat so the CMS can show whether the cron job is running (System status page).
+Schedule::call(fn () => \Illuminate\Support\Facades\Cache::forever('fco.scheduler.last_run', now()->toIso8601String()))
+    ->everyMinute()->name('fco-heartbeat')->withoutOverlapping();

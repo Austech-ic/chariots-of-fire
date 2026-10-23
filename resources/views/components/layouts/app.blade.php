@@ -2,10 +2,11 @@
 @php
     $siteName = setting('site_name');
     $fullTitle = $title ? $title.' · '.$siteName : $siteName.' — '.setting('tagline');
-    $metaDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($description ?? setting('tagline'))), 160);
+    $metaDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($description ?: (setting('seo_description') ?? setting('tagline')))), 160);
     $locales = \App\Support\Locales::all();
     $darkMode = \App\Support\Theme::isDark();
-    $ogImage = $image instanceof \App\Models\MediaAsset && $image->isPublic() ? $image->url('lg') : null;
+    $shareAsset = $image instanceof \App\Models\MediaAsset && $image->isPublic() ? $image : \App\Support\Branding::shareImage();
+    $ogImage = $shareAsset?->url('lg');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $locales[app()->getLocale()]['direction'] ?? 'ltr' }}" @class(['dark' => $darkMode]) data-theme="{{ $darkMode ? 'dark' : 'light' }}">
@@ -30,7 +31,12 @@
     @if ($ogImage)<meta property="og:image" content="{{ $ogImage }}"><meta name="twitter:card" content="summary_large_image">@endif
     <meta name="color-scheme" content="{{ $darkMode ? 'dark' : 'light' }}">
     <meta name="theme-color" content="{{ $darkMode ? '#101116' : '#f7f4ee' }}">
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    @if (\App\Support\Branding::favicon())
+        <link rel="icon" href="{{ \App\Support\Branding::faviconUrl() }}" type="{{ \App\Support\Branding::favicon()->mime_type }}">
+        <link rel="apple-touch-icon" href="{{ \App\Support\Branding::faviconUrl() }}">
+    @else
+        <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    @endif
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">

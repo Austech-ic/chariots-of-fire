@@ -29,6 +29,21 @@
                         </div>
                     @endif
                 @endforeach
+                @php $serviceTimes = array_filter(array_map('trim', preg_split('/\R/', (string) setting('service_times')))); @endphp
+                @if ($serviceTimes)
+                    <div class="card flex gap-4 p-5">
+                        <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-gold/15 text-accent"><x-glyph name="clock" /></span>
+                        <div>
+                            <p class="font-semibold text-fg">{{ __('Service times') }}</p>
+                            <ul class="mt-1 space-y-1 text-muted">@foreach ($serviceTimes as $time)<li>{{ $time }}</li>@endforeach</ul>
+                        </div>
+                    </div>
+                @endif
+                @if (setting('map_embed_url') && str_starts_with(setting('map_embed_url'), 'https://www.google.com/maps/embed'))
+                    <div class="card overflow-hidden">
+                        <iframe src="{{ setting('map_embed_url') }}" title="{{ __('Map') }}" class="aspect-[4/3] w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                    </div>
+                @endif
             </aside>
         </div>
     </section>
