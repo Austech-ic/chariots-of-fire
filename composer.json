@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.3",
         "filament/filament": "^5.10",
-        "intervention/image": "^3",
+        "intervention/image": "^4",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0"
     },
